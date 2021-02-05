@@ -18,7 +18,10 @@ gem 'turbolinks', '~> 5'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 2.7'
 # Authentication with Devise
-gem 'devise'
+# https://github.com/heartcombo/devise/pull/5327#issuecomment-763798550
+gem 'devise', github: 'heartcombo/devise', branch: 'ca-omniauth-2'
+gem 'omniauth-github', '~> 2.0.0'
+gem 'omniauth-rails_csrf_protection'
 # Use Redis adapter to run Action Cable in production
 # gem 'redis', '~> 4.0'
 # Use Active Model has_secure_password
