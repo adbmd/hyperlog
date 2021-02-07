@@ -1,10 +1,13 @@
 class User < ApplicationRecord
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
-  # TODO: Add and setup confirmable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable,
-         :omniauthable, omniauth_providers: [:github]
+         :omniauthable, :confirmable,
+         # omniauthable
+         omniauth_providers: [:github],
+         # confirmable
+         reconfirmable: true, confirm_within: 24.hours
 
   # same github account shouldn't be connected twice
   validates :uid, uniqueness: { scope: :provider }, if: -> { !provider.nil? }
@@ -25,7 +28,7 @@ class User < ApplicationRecord
         user.provider = auth.provider
         user.uid = auth.uid
         user.password = Devise.friendly_token[0, 20]
-        # user.skip_confirmation!
+        user.skip_confirmation!
       end
     end
   end
@@ -41,7 +44,7 @@ class User < ApplicationRecord
       unless self.class.where(provider: auth.provider, uid: auth.uid).exists?
         self.provider = auth.provider
         self.uid = auth.uid
-        self.save
+        save
       end
     end
   end

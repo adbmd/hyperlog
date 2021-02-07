@@ -15,6 +15,8 @@ COPY Gemfile /myapp/Gemfile
 COPY Gemfile.lock /myapp/Gemfile.lock
 RUN gem install bundler -v 2.2.7 && bundle install
 RUN rails webpacker:install
+RUN rails db:create && rails db:migrate
+RUN yarn install
 
 COPY . /myapp
 
