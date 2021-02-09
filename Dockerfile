@@ -14,8 +14,6 @@ WORKDIR /myapp
 COPY Gemfile /myapp/Gemfile
 COPY Gemfile.lock /myapp/Gemfile.lock
 RUN gem install bundler -v 2.2.7 && bundle install
-RUN rails webpacker:install
-RUN rails db:create && rails db:migrate
 RUN yarn install
 
 COPY . /myapp
@@ -26,6 +24,9 @@ RUN chmod +x /usr/bin/entrypoint.sh
 ENTRYPOINT ["entrypoint.sh"]
 
 EXPOSE 3000
+
+RUN rails webpacker:install
+RUN rails db:create && rails db:migrate
 
 # Start the main process.
 CMD ["rails", "server", "-b", "0.0.0.0"]
