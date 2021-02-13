@@ -26,7 +26,6 @@ ENTRYPOINT ["entrypoint.sh"]
 EXPOSE 3000
 
 RUN rails webpacker:install
-RUN rails db:create && rails db:migrate
 
 # Start the main process.
 CMD ["rails", "server", "-b", "0.0.0.0"]
