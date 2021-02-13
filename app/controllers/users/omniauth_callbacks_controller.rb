@@ -6,12 +6,12 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     # and create an account with github-provided details
     if user_signed_in?
       @user = current_user
-      return render html: 'A GitHub account is already connected' if @user.has_github_oauth?
-
-      if @user.add_omniauth(request.env['omniauth.auth'])
-        render html: 'GitHub account connected successfully!'
+      if @user.has_github_oauth?
+        redirect_to :home_index_path, alert: 'A GitHub account is already connected'
+      elsif @user.add_omniauth(request.env['omniauth.auth'])  # if add_omniauth was successful
+        redirect_to :home_index_path, notice: 'GitHub connected successfully!'
       else
-        render html: "Couldn't connect with GitHub account"
+        redirect_to :home_index_path, alert: 'Couldn\'t connect with GitHub account'
       end
     else
       @user = User.from_omniauth(request.env['omniauth.auth'])

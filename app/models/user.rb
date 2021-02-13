@@ -32,6 +32,10 @@ class User < ApplicationRecord
     @login || username || email
   end
 
+  def set_defaults
+    self.username_confirmed = true if self.username_confirmed.nil?
+  end
+
   # overwrite the default
   def self.find_for_database_authentication(warden_conditions)
     conditions = warden_conditions.dup
@@ -63,6 +67,29 @@ class User < ApplicationRecord
 
       # return user with that email id or create a new user
       where(email: auth.info.email).first_or_create do |user|
+        split_name = lambda do |name|
+          ret = name.split(/ /, 2)
+          return ret if ret.length == 2
+
+          [ret[0], '']
+        end
+
+        generate_username = lambda do |nick|
+          if exists?(username: nick)
+            100.times do
+              candidate = "#{nick}-#{SecureRandom.hex(5)}"
+              return candidate unless exists?(username: candidate)
+            end
+            # Something is really wrong if 100 tries weren't enough
+            raise 'Unable to assign a random username'
+          else
+            nick
+          end
+        end
+
+        user.first_name, user.last_name = split_name.call(auth.info.name)
+        user.username = generate_username.call(auth.info.nickname)
+        user.username_confirmed = false # allow user to edit username later
         user.provider = auth.provider
         user.uid = auth.uid
         user.password = Devise.friendly_token[0, 20]
@@ -77,6 +104,7 @@ class User < ApplicationRecord
 
   def add_omniauth(auth)
     return if self.class.exists?(provider: auth.provider, uid: auth.uid)
+    return unless provider.nil?
 
     self.provider = auth.provider
     self.uid = auth.uid

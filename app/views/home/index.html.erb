@@ -1,4 +1,4 @@
 <h1>Home#index</h1>
 <p>Find me in app/views/home/index.html.erb</p>
 
-<%= link_to "Connect GitHub (for Auth)", user_github_omniauth_authorize_path, method: :post %>
+<%= button_to "Connect GitHub (for Auth)", user_github_omniauth_authorize_path, method: :post, form: {"data-turbo" => "false"} %>
