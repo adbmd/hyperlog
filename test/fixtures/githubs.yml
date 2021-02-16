@@ -3,7 +3,9 @@
 one:
   uid: 1
   access_token: MyString
+  profile: one
 
 two:
   uid: 1
   access_token: MyString
+  profile: two

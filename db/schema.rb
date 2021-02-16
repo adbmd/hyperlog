@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_02_13_134444) do
+ActiveRecord::Schema.define(version: 2021_02_14_132937) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -18,7 +18,7 @@ ActiveRecord::Schema.define(version: 2021_02_13_134444) do
 
   create_table "githubs", primary_key: "uid", force: :cascade do |t|
     t.bigint "profile_id"
-    t.string "access_token"
+    t.string "access_token", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["profile_id"], name: "index_githubs_on_profile_id"
