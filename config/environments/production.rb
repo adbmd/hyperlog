@@ -117,4 +117,7 @@ Rails.application.configure do
   # config.active_record.database_selector = { delay: 2.seconds }
   # config.active_record.database_resolver = ActiveRecord::Middleware::DatabaseSelector::Resolver
   # config.active_record.database_resolver_context = ActiveRecord::Middleware::DatabaseSelector::Resolver::Session
+
+  config.x.profiles.github_client_id = ENV['GITHUB_ANALYSIS_CLIENT_ID']
+  config.x.profiles.github_client_secret = ENV['GITHUB_ANALYSIS_CLIENT_SECRET']
 end

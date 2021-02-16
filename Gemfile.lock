@@ -297,6 +297,7 @@ DEPENDENCIES
   hotwire-rails
   jbuilder (~> 2.7)
   listen (~> 3.3)
+  oauth2 (~> 1.4)
   omniauth-github (~> 2.0.0)
   omniauth-rails_csrf_protection
   pg (~> 1.1)

@@ -1,0 +1,11 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  uid: 1
+  access_token: MyString
+  profile: one
+
+two:
+  uid: 1
+  access_token: MyString
+  profile: two

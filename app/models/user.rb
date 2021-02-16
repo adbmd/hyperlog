@@ -15,6 +15,10 @@ class User < ApplicationRecord
          reconfirmable: true,
          confirm_within: 24.hours
 
+  has_one :profile, dependent: :destroy
+
+  after_initialize :set_defaults
+
   # same github account shouldn't be connected twice
   validates :uid, uniqueness: { scope: :provider }, if: -> { !provider.nil? }
 
@@ -33,6 +37,7 @@ class User < ApplicationRecord
 
   def set_defaults
     self.username_confirmed = true if username_confirmed.nil?
+    self.profile ||= Profile.new
   end
 
   # overwrite the default
