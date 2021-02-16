@@ -1,4 +1,12 @@
+<% if alert %>
+<%= alert %>
+<% end %>
+<% if notice %>
+<%= notice %>
+<% end %>
+
 <h1>Home#index</h1>
 <p>Find me in app/views/home/index.html.erb</p>
 
 <%= button_to "Connect GitHub (for Auth)", user_github_omniauth_authorize_path, method: :post, form: {"data-turbo" => "false"} %>
+<%= button_to "Connect GitHub (for Analysis)", profiles_oauth_github_path, method: :get %>

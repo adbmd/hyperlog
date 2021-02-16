@@ -75,4 +75,7 @@ Rails.application.configure do
 
   # Uncomment if you wish to allow Action Cable access from any origin.
   # config.action_cable.disable_request_forgery_protection = true
+
+  config.x.profiles.github_client_id = ENV['GITHUB_ANALYSIS_CLIENT_ID']
+  config.x.profiles.github_client_secret = ENV['GITHUB_ANALYSIS_CLIENT_SECRET']
 end
