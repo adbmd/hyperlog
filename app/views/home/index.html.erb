@@ -1,12 +1,63 @@
-<% if alert %>
-<%= alert %>
-<% end %>
-<% if notice %>
-<%= notice %>
-<% end %>
+<div class="grid grid-cols-1 gap-4 items-start lg:grid-cols-3 lg:gap-8">
+  <!-- Left column -->
+  <div class="grid grid-cols-1 gap-4 lg:col-span-2">
+    <section aria-labelledby="section-1-title">
+      <h2 class="sr-only" id="section-1-title">Section title</h2>
+      <div class="rounded-lg bg-white overflow-hidden shadow">
+        <div class="p-6">
+          <% if alert %>
+          <%= alert %>
+          <% end %>
+          <% if notice %>
+          <%= notice %>
+          <% end %>
 
-<h1>Home#index</h1>
-<p>Find me in app/views/home/index.html.erb</p>
+          <h1>Home#index</h1>
+          <p>Find me in app/views/home/index.html.erb</p>
 
-<%= button_to "Connect GitHub (for Auth)", user_github_omniauth_authorize_path, method: :post, form: {"data-turbo" => "false"} %>
-<%= button_to "Connect GitHub (for Analysis)", profiles_oauth_github_path, method: :get %>
+          <%= button_to "Connect GitHub (for Auth)", user_github_omniauth_authorize_path, method: :post, form: {"data-turbo" => "false"} %>
+          <%= button_to "Connect GitHub (for Analysis)", profiles_oauth_github_path, method: :get %>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- Right column -->
+  <div class="grid grid-cols-1 gap-4">
+    <section aria-labelledby="section-2-title">
+      <h2 class="sr-only" id="section-2-title">Section title</h2>
+      <div class="rounded-lg bg-white overflow-hidden shadow">
+        <div class="p-6">
+          <!-- Some Stuff like Changelog and announcements for the app will go here. -->
+          <div class="relative">
+            <div class="absolute inset-0 flex items-center" aria-hidden="true">
+              <div class="w-full border-t border-gray-300"></div>
+            </div>
+            <div class="relative flex justify-start">
+              <span class="pr-3 bg-white text-lg font-medium text-gray-900">
+                Changelog
+              </span>
+            </div>
+          </div>
+          <div class="mt-2">
+            <ul class="divide-y divide-gray-200">
+              <li class="py-4">
+                <div class="flex space-x-3">
+                  <div class="flex-1 space-y-1">
+                    <div class="flex items-center justify-between">
+                      <h3 class="text-sm font-medium">Beta Launched!</h3>
+                      <p class="text-sm text-gray-500">25/02/2021</p>
+                    </div>
+                    <p class="text-sm text-gray-500">We've finally launched the beta version of the platform!</p>
+                    <a class="text-blue-500 hover:text-blue-700 hover:underline cursor-pointer text-sm">Read More
+                      -></a>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
