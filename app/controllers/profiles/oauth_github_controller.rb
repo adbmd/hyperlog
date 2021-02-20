@@ -21,15 +21,22 @@ class Profiles::OauthGithubController < ApplicationController
     end
 
     if current_user.profile.has_attribute?(:github)
-      redirect_to home_index_path, alert: 'A GitHub account is already connected for analysis'
+      redirect_to home_index_path,
+                  alert: 'A GitHub account is already connected for analysis'
     else
-      p = current_user.profile
+      begin
+        p = current_user.profile
 
-      user_info = token.get('/user', headers: { Accept: 'application/vnd.github.v3+json' }).parsed
-      p.github = Github.new(uid: user_info['id'], access_token: token.token)
-      p.save
+        user_info = token.get('/user',
+                              headers: { Accept: 'application/vnd.github.v3+json' }).parsed
+        p.github = Github.new(uid: user_info['id'], access_token: token.token)
+        p.save!
 
-      redirect_to home_index_path, notice: 'GitHub connected successfully! 🎉'
+        redirect_to home_index_path, notice: 'GitHub connected successfully! 🎉'
+      rescue ActiveRecord::RecordNotUnique
+        redirect_to home_index_path,
+                    alert: 'This GitHub profile is already connected to some other account.'
+      end
     end
   end
 end
