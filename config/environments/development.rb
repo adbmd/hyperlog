@@ -76,6 +76,10 @@ Rails.application.configure do
   # Uncomment if you wish to allow Action Cable access from any origin.
   # config.action_cable.disable_request_forgery_protection = true
 
+  # GitHub OAuth app used for analysis
   config.x.profiles.github_client_id = ENV['GITHUB_ANALYSIS_CLIENT_ID']
   config.x.profiles.github_client_secret = ENV['GITHUB_ANALYSIS_CLIENT_SECRET']
+
+  # Endpoint for triggering initial analysis
+  config.x.profiles.initial_analysis_invocation_url = ENV['INITIAL_ANALYSIS_INVOCATION_URL']
 end

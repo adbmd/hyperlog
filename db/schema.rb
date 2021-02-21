@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_02_14_132937) do
+ActiveRecord::Schema.define(version: 2021_02_20_163125) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -21,15 +21,36 @@ ActiveRecord::Schema.define(version: 2021_02_14_132937) do
     t.string "access_token", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.jsonb "user_profile"
+    t.jsonb "repos"
     t.index ["profile_id"], name: "index_githubs_on_profile_id"
+    t.index ["repos"], name: "index_githubs_on_repos", using: :gin
   end
 
   create_table "profiles", force: :cascade do |t|
-    t.bigint "user_id"
+    t.uuid "user_id"
     t.string "about", default: "", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.jsonb "tech_analysis"
+    t.index ["tech_analysis"], name: "index_profiles_on_tech_analysis", using: :gin
     t.index ["user_id"], name: "index_profiles_on_user_id"
+  end
+
+  create_table "repos", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "provider", null: false
+    t.bigint "provider_repo_id", null: false
+    t.string "full_name", null: false
+    t.string "avatar_url"
+    t.text "description"
+    t.boolean "is_private"
+    t.string "primary_language"
+    t.integer "stargazers"
+    t.string "image_url"
+    t.jsonb "analysis"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["full_name"], name: "index_repos_on_full_name"
   end
 
   create_table "users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
