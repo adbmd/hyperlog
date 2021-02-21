@@ -10,7 +10,7 @@ class TurboFailureApp < Devise::FailureApp
   end
 
   def skip_format?
-    %w(html turbo_stream */*).include? request_format.to_s
+    %w[html turbo_stream */*].include? request_format.to_s
   end
 end
 
@@ -18,9 +18,9 @@ class TurboController < ApplicationController
   class Responder < ActionController::Responder
     def to_turbo_stream
       controller.render(options.merge(formats: :html))
-    rescue ActionView::MissingTemplate => error
+    rescue ActionView::MissingTemplate => e
       if get?
-        raise error
+        raise e
       elsif has_errors? && default_action
         render rendering_options.merge(formats: :html, status: :unprocessable_entity)
       else
@@ -347,8 +347,8 @@ Devise.setup do |config|
   # The "*/*" below is required to match Internet Explorer requests.
   config.navigational_formats = ['*/*', :html, :turbo_stream]
 
-  # The default HTTP method used to sign out a resource. Default is :delete.
-  config.sign_out_via = :delete
+  # The default HTTP method used to sign out a resource.
+  config.sign_out_via = :get
 
   # ==> OmniAuth
   # Add a new OmniAuth provider. Check the wiki for more information on setting
