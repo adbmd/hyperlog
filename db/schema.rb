@@ -51,6 +51,7 @@ ActiveRecord::Schema.define(version: 2021_02_20_163125) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["full_name"], name: "index_repos_on_full_name"
+    t.index ["provider_repo_id"], name: "index_repos_on_provider_repo_id"
   end
 
   create_table "users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
