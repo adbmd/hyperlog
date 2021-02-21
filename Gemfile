@@ -67,3 +67,5 @@ gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
 
 # required in addition to omniauth for analysis connections oauth
 gem "oauth2", "~> 1.4"
+
+gem "faraday", "~> 1.3"
