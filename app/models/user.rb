@@ -7,6 +7,7 @@ class User < ApplicationRecord
          :validatable,
          :omniauthable,
          :confirmable,
+         :registerable,
          # authentication
          authentication_keys: [:login],
          # omniauthable

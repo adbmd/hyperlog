@@ -1,0 +1,31 @@
+<div>
+  <h2 class="text-xl leading-6 font-medium text-gray-900">Login Details</h2>
+  <p class="mt-1 text-sm text-gray-500">
+    Want to change the password? Or want to use GitHub for login? We got you covered.
+  </p>
+</div>
+<div class="relative mt-3">
+  <div class="absolute inset-0 flex items-center" aria-hidden="true">
+    <div class="w-full border-t border-gray-300"></div>
+  </div>
+</div>
+<div class="mt-10">
+  <h3 class="text-lg text-gray-800 font-medium">Change Password</h3>
+  <div class="flex flex-col lg:flex-row">
+    <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put, class: "flex-grow space-y-4" }) do |f| %>
+      <div class="field">
+        <%= f.label :current_password, class:"block text-sm font-medium text-gray-700" %>
+        <%= f.password_field :current_password, autocomplete: "current-password", class: "appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-teal-500 focus:border-teal-500 sm:text-sm" %>
+      </div>
+      <div class="field">
+        <%= f.label :password, "New Password", class:"block text-sm font-medium text-gray-700" %>
+        <%= f.password_field :password, autocomplete: "new-password", class: "appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-teal-500 focus:border-teal-500 sm:text-sm" %>
+      </div>
+      <div class="field">
+        <%= f.label :password_confirmation, class:"block text-sm font-medium text-gray-700" %>
+        <%= f.password_field :password_confirmation, autocomplete: "new-password", class: "appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-teal-500 focus:border-teal-500 sm:text-sm" %>
+      </div>
+      <%= f.submit "Update", class: "inline-flex items-center px-4 py-2 border border-transparent text-sm rounded-md shadow-sm text-white bg-teal-600 hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500" %>
+    <% end %>
+  </div>
+</div>

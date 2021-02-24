@@ -254,13 +254,13 @@
                           Account
                         </span>
                       </a>
-                      <a href="<%= password_path %>" class="<%= current_page?(password_path) ? "bg-teal-50 border-teal-500 text-teal-700 hover:bg-teal-50 hover:text-teal-700" : "border-transparent text-gray-900 hover:bg-gray-50 hover:text-gray-900" %> group border-l-4 px-3 py-2 flex items-center text-sm font-medium" aria-current="page">
+                      <a href="<%= login_path %>" class="<%= current_page?(login_path) ? "bg-teal-50 border-teal-500 text-teal-700 hover:bg-teal-50 hover:text-teal-700" : "border-transparent text-gray-900 hover:bg-gray-50 hover:text-gray-900" %> group border-l-4 px-3 py-2 flex items-center text-sm font-medium" aria-current="page">
                         <!-- Heroicon name: outline/key -->
-                        <svg class="<%= current_page?(password_path) ? "text-teal-500 group-hover:text-teal-500" : "text-gray-400 group-hover:text-gray-500" %> flex-shrink-0 -ml-1 mr-3 h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                        <svg class="<%= current_page?(login_path) ? "text-teal-500 group-hover:text-teal-500" : "text-gray-400 group-hover:text-gray-500" %> flex-shrink-0 -ml-1 mr-3 h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" />
                         </svg>
                         <span class="truncate">
-                          Password
+                          Login Details
                         </span>
                       </a>
                       <a href="<%= themes_path %>" class="<%= current_page?(themes_path) ? "bg-teal-50 border-teal-500 text-teal-700 hover:bg-teal-50 hover:text-teal-700" : "border-transparent text-gray-900 hover:bg-gray-50 hover:text-gray-900" %> group border-l-4 px-3 py-2 flex items-center text-sm font-medium" aria-current="page">
@@ -276,6 +276,44 @@
                   </aside>
                   <div class="divide-y divide-gray-200 lg:col-span-9">
                     <div class="py-6 px-4 sm:p-6 lg:pb-8">
+                      <% if alert %>
+                        <div class="rounded-lg bg-red-50 text-white overflow-hidden shadow mb-6">
+                          <div class="p-5">
+                            <div class="flex">
+                              <div class="flex-shrink-0">
+                                <!-- Heroicon name: solid/information-circle -->
+                                <svg class="h-5 w-5 text-red-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                  <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
+                                </svg>
+                              </div>
+                              <div class="ml-3 flex-1 md:flex md:justify-between">
+                                <p class="text-sm text-red-700">
+                                  <%= alert %>
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      <% end %>
+                      <% if notice %>
+                        <div class="rounded-lg bg-blue-50 text-white overflow-hidden shadow mb-6">
+                          <div class="p-5">
+                            <div class="flex">
+                              <div class="flex-shrink-0">
+                                <!-- Heroicon name: solid/information-circle -->
+                                <svg class="h-5 w-5 text-blue-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                  <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
+                                </svg>
+                              </div>
+                              <div class="ml-3 flex-1 md:flex md:justify-between">
+                                <p class="text-sm text-blue-700">
+                                  <%= notice %>
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      <% end %>
                       <%= yield %>
                     </div>
                   </div>
