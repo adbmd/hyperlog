@@ -26,6 +26,10 @@ class User < ApplicationRecord
   # case insensitive
   validates :username, presence: true, uniqueness: { case_sensitive: false }
 
+  # first name and last name
+  validates :first_name, presence: true
+  validates :last_name, presence: true
+
   # @ character shouldn't be allowed in username (else it could be confused with email)
   validates :username, format: { with: /^[a-zA-Z0-9_.]*$/, multiline: true }
 

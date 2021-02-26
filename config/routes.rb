@@ -26,6 +26,7 @@ Rails.application.routes.draw do
 
   scope '/settings' do
     get '/profile', to: 'settings#profile'
+    put '/profile', to: 'settings#profile_edit'
     get '/themes', to: 'settings#themes'
     get '/account', to: 'settings#account'
     get '/login', to: 'settings#login'

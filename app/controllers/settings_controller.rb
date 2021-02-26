@@ -1,12 +1,34 @@
 class SettingsController < ApplicationController
   layout 'settings'
-  def profile; end
+  def profile
+    @user = current_user
+  end
 
   def account; end
 
   def themes; end
 
   def password; end
+
+  def profile_edit
+    if params.has_key?(:first_name) && params.has_key?(:last_name)
+      user = User.find(current_user.id)
+      user.first_name = params[:first_name]
+      user.last_name = params[:last_name]
+      if user.valid?
+        user.save!
+        redirect_to profile_path,
+                    notice: 'Updated Successfully'
+      else
+        redirect_to profile_path,
+                    alert: 'Something went wrong. Please try again.'
+      end
+    end
+  end
+
+  def profile_params
+    params.require(:user).permit(:first_name, :last_name)
+  end
 
   private
 

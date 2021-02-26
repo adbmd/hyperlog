@@ -1,1 +1,40 @@
-<h1>Profile Tab</h1>
+<div>
+  <h2 class="text-xl leading-6 font-medium text-gray-900">Profile</h2>
+  <p class="mt-1 text-sm text-gray-500">
+    These details go up on the account. So change them cautiously.
+  </p>
+</div>
+<div class="relative mt-3">
+  <div class="absolute inset-0 flex items-center" aria-hidden="true">
+    <div class="w-full border-t border-gray-300"></div>
+  </div>
+</div>
+<div class="mt-10">
+  <h3 class="text-lg text-gray-800 font-medium">Primary Details</h3>
+  <div class="flex flex-col lg:flex-row">
+    <%= form_with url: profile_path, html: { method: :put, class: "flex-grow space-y-4" } do |f| %>
+      <div>
+        <label for="username" class="block text-sm font-medium text-gray-700">
+          Username
+        </label>
+        <div class="mt-1 rounded-md shadow-sm flex">
+          <input type="text" name="username" id="username" autocomplete="username" disabled class="focus:ring-teal-500 focus:border-teal-500 flex-grow block w-full min-w-0 rounded-none rounded-l-md sm:text-sm border-gray-300 bg-gray-50" value="<%= current_user.username %>">
+          <span class="bg-gray-50 border border-l-0 border-gray-300 rounded-r-md px-3 inline-flex items-center text-gray-500 sm:text-sm">
+            .hyperlog.dev
+          </span>
+        </div>
+      </div>
+      <div class="mt-6 grid grid-cols-12 gap-6">
+        <div class="col-span-12 sm:col-span-6">
+          <%= f.label :first_name, class: "block text-sm font-medium text-gray-700" %>
+          <%= f.text_field :first_name, value: current_user.first_name, autocomplete: "given-name", class: "mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-teal-500 focus:border-teal-500 sm:text-sm"%>
+        </div>
+        <div class="col-span-12 sm:col-span-6">
+          <%= f.label :last_name, class: "block text-sm font-medium text-gray-700" %>
+          <%= f.text_field :last_name, value: current_user.last_name, autocomplete: "family-name", class: "mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-teal-500 focus:border-teal-500 sm:text-sm"%>
+        </div>
+      </div>
+      <%= f.submit "Update", class: "inline-flex items-center px-4 py-2 border border-transparent text-sm rounded-md shadow-sm text-white bg-teal-600 hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500" %>
+    <% end %>
+  </div>
+</div>
