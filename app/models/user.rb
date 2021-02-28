@@ -41,6 +41,8 @@ class User < ApplicationRecord
   end
 
   def set_defaults
+    return unless new_record?
+
     self.username_confirmed = true if username_confirmed.nil?
     self.profile ||= Profile.new
   end

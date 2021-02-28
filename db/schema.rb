@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_02_20_163125) do
+ActiveRecord::Schema.define(version: 2021_02_28_050627) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -23,7 +23,7 @@ ActiveRecord::Schema.define(version: 2021_02_20_163125) do
     t.datetime "updated_at", precision: 6, null: false
     t.jsonb "user_profile"
     t.jsonb "repos"
-    t.index ["profile_id"], name: "index_githubs_on_profile_id"
+    t.index ["profile_id"], name: "index_githubs_on_profile_id", unique: true
     t.index ["repos"], name: "index_githubs_on_repos", using: :gin
   end
 
@@ -33,8 +33,10 @@ ActiveRecord::Schema.define(version: 2021_02_20_163125) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.jsonb "tech_analysis"
+    t.string "tagline", default: "", null: false
+    t.jsonb "social_links", default: {}, null: false
     t.index ["tech_analysis"], name: "index_profiles_on_tech_analysis", using: :gin
-    t.index ["user_id"], name: "index_profiles_on_user_id"
+    t.index ["user_id"], name: "index_profiles_on_user_id", unique: true
   end
 
   create_table "repos", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -89,4 +91,6 @@ ActiveRecord::Schema.define(version: 2021_02_20_163125) do
     t.index ["username"], name: "index_users_on_username", unique: true
   end
 
+  add_foreign_key "githubs", "profiles"
+  add_foreign_key "profiles", "users"
 end
