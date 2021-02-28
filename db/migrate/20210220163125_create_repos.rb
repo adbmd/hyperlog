@@ -13,7 +13,7 @@ class CreateRepos < ActiveRecord::Migration[6.1]
       t.jsonb   :analysis
 
       t.index :full_name
-      t.index :provider_repo_id
+      t.index %i[provider_repo_id provider], unique: true
 
       t.timestamps
     end

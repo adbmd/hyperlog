@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_02_28_050627) do
+ActiveRecord::Schema.define(version: 2021_02_28_091308) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -39,6 +39,19 @@ ActiveRecord::Schema.define(version: 2021_02_28_050627) do
     t.index ["user_id"], name: "index_profiles_on_user_id", unique: true
   end
 
+  create_table "projects", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.bigint "profile_id", null: false
+    t.uuid "repo_id", null: false
+    t.string "name", null: false
+    t.string "tagline", null: false
+    t.string "description", null: false
+    t.string "image_url", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["profile_id"], name: "index_projects_on_profile_id"
+    t.index ["repo_id"], name: "index_projects_on_repo_id", unique: true
+  end
+
   create_table "repos", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "provider", null: false
     t.bigint "provider_repo_id", null: false
@@ -53,7 +66,7 @@ ActiveRecord::Schema.define(version: 2021_02_28_050627) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["full_name"], name: "index_repos_on_full_name"
-    t.index ["provider_repo_id"], name: "index_repos_on_provider_repo_id"
+    t.index ["provider_repo_id", "provider"], name: "index_repos_on_provider_repo_id_and_provider", unique: true
   end
 
   create_table "users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -93,4 +106,6 @@ ActiveRecord::Schema.define(version: 2021_02_28_050627) do
 
   add_foreign_key "githubs", "profiles"
   add_foreign_key "profiles", "users"
+  add_foreign_key "projects", "profiles"
+  add_foreign_key "projects", "repos"
 end
