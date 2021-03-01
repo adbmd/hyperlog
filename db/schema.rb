@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_02_28_091308) do
+ActiveRecord::Schema.define(version: 2021_03_01_033846) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -39,9 +39,19 @@ ActiveRecord::Schema.define(version: 2021_02_28_091308) do
     t.index ["user_id"], name: "index_profiles_on_user_id", unique: true
   end
 
+  create_table "project_repos", force: :cascade do |t|
+    t.uuid "project_id", null: false
+    t.uuid "repo_id", null: false
+    t.integer "occurences"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["project_id", "repo_id"], name: "index_project_repos_on_project_id_and_repo_id", unique: true
+    t.index ["project_id"], name: "index_project_repos_on_project_id"
+    t.index ["repo_id"], name: "index_project_repos_on_repo_id"
+  end
+
   create_table "projects", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.bigint "profile_id", null: false
-    t.uuid "repo_id", null: false
     t.string "name", null: false
     t.string "tagline", null: false
     t.string "description", null: false
@@ -49,7 +59,6 @@ ActiveRecord::Schema.define(version: 2021_02_28_091308) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["profile_id"], name: "index_projects_on_profile_id"
-    t.index ["repo_id"], name: "index_projects_on_repo_id", unique: true
   end
 
   create_table "repos", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -107,5 +116,4 @@ ActiveRecord::Schema.define(version: 2021_02_28_091308) do
   add_foreign_key "githubs", "profiles"
   add_foreign_key "profiles", "users"
   add_foreign_key "projects", "profiles"
-  add_foreign_key "projects", "repos"
 end

@@ -2,8 +2,6 @@ class CreateProjects < ActiveRecord::Migration[6.1]
   def change
     create_table :projects, id: :uuid do |t|
       t.belongs_to :profile, null: false, index: true, foreign_key: true
-      t.belongs_to :repo, type: :uuid, null: false, index: { unique: true },
-                          foreign_key: true
 
       t.string     :name, null: false
       t.string     :tagline, null: false
