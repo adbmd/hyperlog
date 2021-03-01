@@ -1,6 +1,7 @@
 class Profile < ApplicationRecord
   belongs_to :user
   has_one :github, dependent: :destroy
+  has_many :projects, dependent: :destroy
 
   after_initialize :set_defaults
   validates_each :social_links do |record, attr, value|
@@ -11,6 +12,11 @@ class Profile < ApplicationRecord
       unless valid_socials.include?(k)
         record.errors.add(attr, "#{k} is not a valid social provider")
       end
+    end
+  end
+  validate do |profile|
+    unless profile.projects.length <= 5
+      errors.add :base, 'You can create no more than 5 projects'
     end
   end
 
