@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_01_033846) do
+ActiveRecord::Schema.define(version: 2021_03_04_043752) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -22,9 +22,22 @@ ActiveRecord::Schema.define(version: 2021_03_01_033846) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.jsonb "user_profile"
-    t.jsonb "repos"
     t.index ["profile_id"], name: "index_githubs_on_profile_id", unique: true
-    t.index ["repos"], name: "index_githubs_on_repos", using: :gin
+  end
+
+  create_table "profile_repo_analyses", force: :cascade do |t|
+    t.bigint "profile_id", null: false
+    t.uuid "repo_id", null: false
+    t.uuid "project_id"
+    t.integer "contributions"
+    t.jsonb "tech_analysis"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["profile_id", "repo_id"], name: "index_profile_repo_analyses_on_profile_id_and_repo_id", unique: true
+    t.index ["profile_id"], name: "index_profile_repo_analyses_on_profile_id"
+    t.index ["project_id"], name: "index_profile_repo_analyses_on_project_id"
+    t.index ["repo_id"], name: "index_profile_repo_analyses_on_repo_id"
+    t.index ["tech_analysis"], name: "index_profile_repo_analyses_on_tech_analysis", using: :gin
   end
 
   create_table "profiles", force: :cascade do |t|
@@ -32,22 +45,9 @@ ActiveRecord::Schema.define(version: 2021_03_01_033846) do
     t.string "about", default: "", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.jsonb "tech_analysis"
     t.string "tagline", default: "", null: false
     t.jsonb "social_links", default: {}, null: false
-    t.index ["tech_analysis"], name: "index_profiles_on_tech_analysis", using: :gin
     t.index ["user_id"], name: "index_profiles_on_user_id", unique: true
-  end
-
-  create_table "project_repos", force: :cascade do |t|
-    t.uuid "project_id", null: false
-    t.uuid "repo_id", null: false
-    t.integer "occurences"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["project_id", "repo_id"], name: "index_project_repos_on_project_id_and_repo_id", unique: true
-    t.index ["project_id"], name: "index_project_repos_on_project_id"
-    t.index ["repo_id"], name: "index_project_repos_on_repo_id"
   end
 
   create_table "projects", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -114,6 +114,9 @@ ActiveRecord::Schema.define(version: 2021_03_01_033846) do
   end
 
   add_foreign_key "githubs", "profiles"
+  add_foreign_key "profile_repo_analyses", "profiles"
+  add_foreign_key "profile_repo_analyses", "projects"
+  add_foreign_key "profile_repo_analyses", "repos"
   add_foreign_key "profiles", "users"
   add_foreign_key "projects", "profiles"
 end

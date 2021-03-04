@@ -4,6 +4,7 @@ class Profile < ApplicationRecord
   has_many :projects, dependent: :destroy
 
   after_initialize :set_defaults
+
   validates_each :social_links do |record, attr, value|
     value_dup = value.symbolize_keys
     valid_socials = get_valid_socials
@@ -14,16 +15,12 @@ class Profile < ApplicationRecord
       end
     end
   end
-  validate do |profile|
-    unless profile.projects.length <= 5
-      errors.add :base, 'You can create no more than 5 projects'
-    end
-  end
+
+  validates :projects, length: { maximum: 5 }
 
   def set_defaults
     return unless new_record?
 
-    self.tech_analysis ||= { repos: {} }
     self.tagline ||= ''
     self.social_links ||= {}
   end
