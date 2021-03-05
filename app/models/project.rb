@@ -30,13 +30,44 @@ class Project < ApplicationRecord
   def add_repo(repo)
     prof_repo_analysis = repo.profile_repo_analyses.find_by!(profile: profile)
     profile_repo_analyses << prof_repo_analysis
+    # update aggregated_tech_analysis
+    aggregate_analysis
     repo.reload
   end
 
   def remove_repo(repo)
     prof_repo_analysis = repo.profile_repo_analyses.find_by!(profile: profile)
     prof_repo_analysis.update!(project: nil)
+    # update aggregated_tech_analysis
+    aggregate_analysis
     repo.reload
+  end
+
+  def aggregate_analysis
+    # initialize new hash, we'll fully recompute the overall analysis
+    aggregated = { libs: {}, tags: {}, tech: {} }
+    profile_repo_analyses.pluck(:tech_analysis).each do |tech_analysis|
+      tech_analysis.symbolize_keys!
+      # category is one of [:libs, :tech, :tags]
+      tech_analysis.each do |category, category_stats|
+        # specific_key is the id of the lib, tech or tag
+        # e.g. it can be 'rb.rails' (as library) or 'framework' (as a tag)
+        category_stats.each do |specific_key, stats|
+          unless aggregated[category].key?(specific_key)
+            aggregated[category][specific_key] =
+              initial_stats_unit_for_tech_analysis
+          end
+
+          aggregated[category][specific_key][:insertions] += stats['insertions']
+          aggregated[category][specific_key][:deletions] += stats['deletions']
+        end
+      end
+    end
+
+    self.aggregated_tech_analysis = aggregated
+    save!
+
+    aggregated_tech_analysis
   end
 
   private
@@ -59,5 +90,9 @@ class Project < ApplicationRecord
                    "Profile on project doens't match profile on analysis for repo #{pr_analysis.repo.full_name}")
       end
     end
+  end
+
+  def initial_stats_unit_for_tech_analysis
+    { insertions: 0, deletions: 0 }
   end
 end

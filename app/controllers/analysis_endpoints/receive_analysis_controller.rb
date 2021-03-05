@@ -51,6 +51,8 @@ class AnalysisEndpoints::ReceiveAnalysisController < ActionController::Base
     }
     prof_repo_analysis.save!
 
+    prof_repo_analysis.project&.aggregate_analysis
+
     render json: { success: true }
   end
 
