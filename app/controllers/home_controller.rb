@@ -1,4 +1,6 @@
 class HomeController < ApplicationController
   layout 'user'
-  def index; end
+  def index
+    @profile = current_user.profile
+  end
 end

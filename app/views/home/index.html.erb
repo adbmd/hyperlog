@@ -80,6 +80,14 @@
               <div class="prose">
                 <span class="bg-gradient-to-r from-teal-200 to-green-200 text-gray-600 p-1 font-semibold">Great Job 🎉! Your GitHub profile is successfully connected for further analysis.</span><br /> We'll let you know when we completely analyse your profile. Why don't you head over to the projects sections and start adding your projects?
               </div>
+              <div>
+                <% if @profile.analysis_status %>
+                  <%= @profile.analysis_status['analysed_repos_count'] %> / <%= @profile.analysis_status['repos_count'] %> repos analysed.
+                  <% unless @profile.analysis_status['current_repo'].nil? %>
+                    Analysing <%= link_to(@profile.analysis_status['current_repo'].fetch('name'), @profile.analysis_status['current_repo'].fetch('url')) %>
+                  <% end %>
+                <% end %>
+              </div>
               <div class="w-96">
                 <button type="button" class="mt-5 inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-full shadow-sm text-white bg-teal-600 hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500">
                   Checkout Projects ->

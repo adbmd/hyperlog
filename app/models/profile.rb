@@ -1,6 +1,9 @@
 class Profile < ApplicationRecord
   belongs_to :user
+
   has_one :github, dependent: :destroy
+
+  has_many :profile_repo_analyses, dependent: :destroy
   has_many :projects, dependent: :destroy
 
   after_initialize :set_defaults
@@ -17,13 +20,6 @@ class Profile < ApplicationRecord
   end
 
   validates :projects, length: { maximum: 5 }
-
-  def set_defaults
-    return unless new_record?
-
-    self.tagline ||= ''
-    self.social_links ||= {}
-  end
 
   # class method for valid social providers (valid keys for social_links)
   def self.get_valid_socials
@@ -42,5 +38,32 @@ class Profile < ApplicationRecord
       twitter: 'twitter.com/',
       github: 'github.com/'
     }
+  end
+
+  def update_analysis_status
+    self.analysis_status = {
+      repos_count: profile_repo_analyses.size,
+      analysed_repos_count: profile_repo_analyses
+                           .where.not(tech_analysis: nil)
+                           .size,
+      current_repo: nil,
+      updated_at: Time.current.to_formatted_s(:iso8601)
+    }
+    save!
+  end
+
+  def analysis_completed?
+    analysed, total = analysis_status.values_at('analysed_repos_count',
+                                                'repos_count')
+    analysed == total
+  end
+
+  private
+
+  def set_defaults
+    return unless new_record?
+
+    self.tagline ||= ''
+    self.social_links ||= {}
   end
 end
