@@ -1,6 +1,8 @@
 class SettingsController < ApplicationController
   layout 'settings'
   def profile
+    @base_social_links = Profile.base_social_links
+    @social_links = current_user.profile.social_links.symbolize_keys
     @user = current_user
   end
 
@@ -11,23 +13,35 @@ class SettingsController < ApplicationController
   def password; end
 
   def profile_edit
-    if params.has_key?(:first_name) && params.has_key?(:last_name)
-      user = User.find(current_user.id)
-      user.first_name = params[:first_name]
-      user.last_name = params[:last_name]
-      if user.valid?
-        user.save!
-        redirect_to profile_path,
-                    notice: 'Updated Successfully'
-      else
-        redirect_to profile_path,
-                    alert: 'Something went wrong. Please try again.'
-      end
+    user = User.find(current_user.id)
+    if user.update(profile_params)
+      redirect_to profile_path,
+                  notice: 'Updated Successfully'
+    else
+      redirect_to profile_path,
+                  alert: 'Something went wrong. Please try again.'
+    end
+  end
+
+  def social_edit
+    profile = current_user.profile
+
+    if profile.update(social_params)
+      redirect_to profile_path,
+                  notice: 'Updated Successfully'
+    else
+      redirect_to profile_path,
+                  alert: 'Something went wrong. Please try again.'
     end
   end
 
   def profile_params
     params.require(:user).permit(:first_name, :last_name)
+  end
+
+  def social_params
+    params.require(:profile).permit(:tagline,
+                                    social_links: Profile.valid_socials)
   end
 
   private

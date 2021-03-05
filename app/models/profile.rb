@@ -7,10 +7,10 @@ class Profile < ApplicationRecord
 
   validates_each :social_links do |record, attr, value|
     value_dup = value.symbolize_keys
-    valid_socials = get_valid_socials
+    valid_socials_hash = valid_socials
 
     value_dup.each_key do |k|
-      unless valid_socials.include?(k)
+      unless valid_socials_hash.include?(k)
         record.errors.add(attr, "#{k} is not a valid social provider")
       end
     end
@@ -26,7 +26,7 @@ class Profile < ApplicationRecord
   end
 
   # class method for valid social providers (valid keys for social_links)
-  def self.get_valid_socials
+  def self.valid_socials
     %i[twitter facebook github stackoverflow dribble devto linkedin]
   end
 
@@ -37,7 +37,7 @@ class Profile < ApplicationRecord
       linkedin: 'linkedin.com/in/',
       devto: 'dev.to/',
       stackoverflow: 'stackoverflow.com/users/',
-      dribbble: 'dribble.com/',
+      dribbble: 'dribbble.com/',
       facebook: 'facebook.com/',
       twitter: 'twitter.com/',
       github: 'github.com/'
