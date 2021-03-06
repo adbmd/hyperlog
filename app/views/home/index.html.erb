@@ -75,6 +75,17 @@
                 </span>
               </div>
             </div>
+          <% elsif @profile.analysis_completed? %>
+            <div class="flex flex-col justify-center">
+              <div class="prose">
+                <span class="bg-gradient-to-r from-teal-200 to-green-200 text-gray-600 p-1 font-semibold">Great Job 🎉! Your GitHub profile is successfully connected and analysed!</span><br /> Head over to <%= link_to "#{current_user.username}.hyperlog.dev", "https://#{current_user.username}.hyperlog.dev", target: '_blank' %> to see your portfolio in action!
+              </div>
+              <div class="w-96">
+                <button type="button" class="mt-5 inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-full shadow-sm text-white bg-teal-600 hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500">
+                  Checkout Projects ->
+                </button>
+              </div>
+            </div>
           <% else %>
             <div class="flex flex-col justify-center">
               <div class="prose">
