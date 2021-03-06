@@ -55,8 +55,7 @@ class AnalysisEndpoints::ReceiveAnalysisController < ActionController::Base
     prof_repo_analysis.tech_analysis = {
       libs: data['libs'],
       tech: data['tech'],
-      tags: data['tags'],
-      updated_at: Time.current.to_formatted_s(:iso8601)
+      tags: data['tags']
     }
     prof_repo_analysis.save!
 
