@@ -24,6 +24,14 @@ Rails.application.routes.draw do
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
   root to: 'home#index'
 
+  scope '/data_api' do
+    get '/user_info', to: 'data_api#user_info'
+    get '/user_socials', to: 'data_api#user_socials'
+    get '/projects', to: 'data_api#projects'
+    get '/projects/:id', to: 'data_api#project_info'
+    get '/projects/:project_id/repos/:repo_id', to: 'data_api#project_repo'
+  end
+
   scope '/settings' do
     get '/profile', to: 'settings#profile'
     put '/profile', to: 'settings#profile_edit'
