@@ -9,7 +9,16 @@ class DataApiController < ActionController::API
 
   # GET /user_socials
   def user_socials
-    render json: @portfolio_user.profile.social_links
+    raw_socials = @portfolio_user.profile.social_links.symbolize_keys
+    socials_with_prefix = {}.tap do |socials|
+      raw_socials.each do |provider, username|
+        socials[provider] = {
+          url_prefix: "https://#{Profile.base_social_links.fetch(provider)}",
+          username: username
+        }
+      end
+    end
+    render json: socials_with_prefix
   end
 
   # GET /projects
@@ -63,8 +72,7 @@ class DataApiController < ActionController::API
 
   def user_info_from_user(user)
     user_attributes = user.as_json only: %i[username first_name last_name]
-    profile_attributes = user.profile.as_json only: %i[tagline about
-                                                       social_links]
+    profile_attributes = user.profile.as_json only: %i[tagline about]
     user_attributes.merge(profile_attributes)
   end
 
