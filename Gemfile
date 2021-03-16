@@ -73,3 +73,5 @@ gem "faraday", "~> 1.3"
 gem "rack-cors", "~> 1.1"
 
 gem "phonelib", "~> 0.6.48"
+
+gem "figaro", "~> 1.2"
