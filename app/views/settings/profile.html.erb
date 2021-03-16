@@ -116,4 +116,24 @@
       <%= f.submit "Update", class: "inline-flex items-center px-4 py-2 border border-transparent text-sm rounded-md shadow-sm text-white bg-teal-600 cursor-pointer hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500" %>
     <% end %>
   </div>
+  <h3 class="text-lg text-gray-800 font-medium mt-10">Contact Info</h3>
+  <div class="flex flex-col lg:flex-row">
+    <%= form_with model: @user.profile, url: profile_contact_info_path, html: { method: :put, class: "flex-grow space-y-4" } do |f| %>
+      <div class="mt-6 grid grid-cols-12 gap-6">
+        <div class="col-span-12">
+          <%= f.label 'contact_info[email]', 'Email Address', class: "block text-sm font-medium text-gray-700" %>
+          <%= f.email_field 'contact_info[email]', value: @contact_info.fetch('email'), placeholder: 'yourname@example.com', class: "mt-1 block w-3/4 border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-teal-500 focus:border-teal-500 sm:text-sm" %>
+        </div>
+        <div class="col-span-12">
+          <%= f.label 'contact_info[phone]', 'Phone Number', class: "block text-sm font-medium text-gray-700" %>
+          <%= f.text_field 'contact_info[phone]', value: @contact_info.fetch('phone'), placeholder: 'Prefer adding your country code (e.g. +1 for US, +91 for India)', class: "mt-1 block w-3/4 border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-teal-500 focus:border-teal-500 sm:text-sm" %>
+        </div>
+        <div class="col-span-12">
+          <%= f.label 'contact_info[location]', 'Location', class: "block text-sm font-medium text-gray-700" %>
+          <%= f.text_field 'contact_info[location]', value: @contact_info.fetch('location'), placeholder: 'Geek City, Developer Heaven.', class: "mt-1 block w-3/4 border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-teal-500 focus:border-teal-500 sm:text-sm" %>
+        </div>
+      </div>
+      <%= f.submit "Update", class: "inline-flex items-center px-4 py-2 border border-transparent text-sm rounded-md shadow-sm text-white bg-teal-600 cursor-pointer hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500" %>
+    <% end %>
+  </div>
 </div>

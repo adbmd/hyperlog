@@ -3,6 +3,8 @@ class Profile < ApplicationRecord
   has_one :github, dependent: :destroy
   has_many :projects, dependent: :destroy
 
+  before_save :contact_info_attrs_nil_if_blank
+
   after_initialize :set_defaults
 
   validates_each :social_links do |record, attr, value|
@@ -16,18 +18,26 @@ class Profile < ApplicationRecord
     end
   end
 
+  # allow a maximum of 5 projects per user
   validates :projects, length: { maximum: 5 }
+
+  validate :validate_contact_info_email, :validate_contact_info_phone
 
   def set_defaults
     return unless new_record?
 
     self.tagline ||= ''
     self.social_links ||= {}
+    self.contact_info ||= {
+      email: nil,
+      phone: nil,
+      location: nil
+    }
   end
 
   # class method for valid social providers (valid keys for social_links)
   def self.valid_socials
-    %i[twitter facebook github stackoverflow dribble devto linkedin]
+    %i[twitter facebook github stackoverflow dribbble devto linkedin]
   end
 
   # base urls for user profiles for each provider
@@ -42,5 +52,29 @@ class Profile < ApplicationRecord
       twitter: 'twitter.com/',
       github: 'github.com/'
     }
+  end
+
+  private
+
+  def validate_contact_info_email
+    return if contact_info['email'].nil?
+
+    unless URI::MailTo::EMAIL_REGEXP.match(contact_info['email'])
+      errors.add(:contact_info, 'email is not valid')
+    end
+  end
+
+  def validate_contact_info_phone
+    return if contact_info['phone'].nil?
+
+    if Phonelib.invalid?(contact_info['phone'])
+      errors.add(:contact_info, 'phone number is invalid')
+    end
+  end
+
+  def contact_info_attrs_nil_if_blank
+    contact_info.each do |k, v|
+      contact_info[k] = nil if v == ''
+    end
   end
 end

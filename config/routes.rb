@@ -36,6 +36,7 @@ Rails.application.routes.draw do
     get '/profile', to: 'settings#profile'
     put '/profile', to: 'settings#profile_edit'
     put '/profile_social', to: 'settings#social_edit'
+    put '/profile_contact_info', to: 'settings#contact_info_edit'
     get '/themes', to: 'settings#themes'
     get '/account', to: 'settings#account'
     get '/password', to: 'settings#password'

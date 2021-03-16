@@ -3,6 +3,7 @@ class SettingsController < ApplicationController
   def profile
     @base_social_links = Profile.base_social_links
     @social_links = current_user.profile.social_links.symbolize_keys
+    @contact_info = current_user.profile.contact_info
     @user = current_user
   end
 
@@ -35,8 +36,34 @@ class SettingsController < ApplicationController
     end
   end
 
+  def contact_info_edit
+    profile = current_user.profile
+
+    params_object = contact_info_params
+
+    if params_object.dig('contact_info', 'phone')
+      phone = Phonelib.parse(params_object.dig('contact_info', 'phone'))
+      params_object[:contact_info][:phone] =
+        if phone.country_code
+          phone.international
+        else
+          phone.e164
+        end
+    end
+
+    if profile.update(params_object)
+      redirect_to profile_path, notice: 'Updated successfully!'
+    else
+      redirect_to profile_path, alert: profile.errors.full_messages.to_sentence
+    end
+  end
+
   def profile_params
     params.require(:user).permit(:first_name, :last_name)
+  end
+
+  def contact_info_params
+    params.require(:profile).permit(contact_info: %i[email phone location])
   end
 
   def social_params

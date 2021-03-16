@@ -71,3 +71,5 @@ gem "oauth2", "~> 1.4"
 gem "faraday", "~> 1.3"
 
 gem "rack-cors", "~> 1.1"
+
+gem "phonelib", "~> 0.6.48"

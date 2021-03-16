@@ -14,9 +14,11 @@ class AnalysisEndpoints::ReceiveAnalysisController < ActionController::Base
     g = profile.github
     return render json: { success: false, message: 'GitHub not connected' }, status: :bad_request if g.nil?
 
+    # save analysed user profile as it is to github data
     g.user_profile = data[:user_profile]
     g.save!
 
+    # create repo objects from data[:repos] array
     data[:repos].each_value do |repo_info|
       repo = Repo.where(provider: 'github', provider_repo_id: repo_info['repo_id']).first_or_create do |repo|
         repo.full_name = repo_info.fetch('full_name')
@@ -28,6 +30,7 @@ class AnalysisEndpoints::ReceiveAnalysisController < ActionController::Base
         repo.image_url = repo_info['image_url']
       end
 
+      # create/update ProfileRepoAnalysis objects for the profile-repo pair
       p_repo_analysis = ProfileRepoAnalysis.where(profile_id: profile, repo: repo).first_or_create
       p_repo_analysis.update!(contributions: repo_info['occurences'])
     end
