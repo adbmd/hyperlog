@@ -53,6 +53,8 @@ class Profile < ApplicationRecord
   end
 
   def analysis_completed?
+    return false if analysis_status.nil?
+
     analysed, total = analysis_status.values_at('analysed_repos_count',
                                                 'repos_count')
     analysed == total
