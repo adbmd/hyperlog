@@ -1,4 +1,6 @@
 class Profile < ApplicationRecord
+  include CableReady::Broadcaster
+
   belongs_to :user
 
   has_one :github, dependent: :destroy
@@ -7,6 +9,16 @@ class Profile < ApplicationRecord
   has_many :projects, dependent: :destroy
 
   after_initialize :set_defaults
+
+  after_update do
+    cable_ready['progress'].morph(
+      selector: '#' + ActionView::RecordIdentifier.dom_id(self),
+      html: ApplicationController.render(partial: 'home/progress',
+                                         locals: { profile: self })
+    )
+    cable_ready['progress'].console_log(message: 'SOMETHING UPDATED')
+    cable_ready.broadcast
+  end
 
   validates_each :social_links do |record, attr, value|
     value_dup = value.symbolize_keys

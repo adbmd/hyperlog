@@ -69,3 +69,5 @@ gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
 gem "oauth2", "~> 1.4"
 
 gem "faraday", "~> 1.3"
+
+gem "cable_ready", "~> 4.5"
