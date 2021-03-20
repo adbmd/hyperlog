@@ -16,7 +16,6 @@ class Profile < ApplicationRecord
       html: ApplicationController.render(partial: 'home/progress',
                                          locals: { profile: self })
     )
-    cable_ready['progress'].console_log(message: 'SOMETHING UPDATED')
     cable_ready.broadcast
   end
 
