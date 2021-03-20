@@ -4,7 +4,7 @@ class AnalysisEndpoints::ReceiveAnalysisController < ActionController::Base
   TOKEN = ENV['ANALYSIS_ENDPOINTS_AUTH_TOKEN']
 
   before_action :authenticate
-  skip_before_action :verify_authenticity_token  # disable csrf
+  skip_before_action :verify_authenticity_token # disable csrf
 
   # POST /initial_analysis
   def receive_initial_analysis
@@ -12,7 +12,10 @@ class AnalysisEndpoints::ReceiveAnalysisController < ActionController::Base
 
     profile = User.find(params[:user_id]).profile
     g = profile.github
-    return render json: { success: false, message: 'GitHub not connected' }, status: :bad_request if g.nil?
+    if g.nil?
+      return render json: { success: false, message: 'GitHub not connected' },
+                    status: :bad_request
+    end
 
     # save analysed user profile as it is to github data
     g.user_profile = data[:user_profile]
@@ -20,7 +23,8 @@ class AnalysisEndpoints::ReceiveAnalysisController < ActionController::Base
 
     # create repo objects from data[:repos] array
     data[:repos].each_value do |repo_info|
-      repo = Repo.where(provider: 'github', provider_repo_id: repo_info['repo_id']).first_or_create do |repo|
+      repo = Repo.where(provider: 'github',
+                        provider_repo_id: repo_info['repo_id']).first_or_create do |repo|
         repo.full_name = repo_info.fetch('full_name')
         repo.avatar_url = repo_info['avatar_url']
         repo.description = repo_info['description']
@@ -31,9 +35,12 @@ class AnalysisEndpoints::ReceiveAnalysisController < ActionController::Base
       end
 
       # create/update ProfileRepoAnalysis objects for the profile-repo pair
-      p_repo_analysis = ProfileRepoAnalysis.where(profile_id: profile, repo: repo).first_or_create
+      p_repo_analysis = ProfileRepoAnalysis.where(profile_id: profile,
+                                                  repo: repo).first_or_create
       p_repo_analysis.update!(contributions: repo_info['occurences'])
     end
+
+    profile.update_analysis_status
 
     render json: { success: true }
   end
@@ -46,7 +53,8 @@ class AnalysisEndpoints::ReceiveAnalysisController < ActionController::Base
     profile = User.find(params[:user_id]).profile
     repo = Repo.find_by!(provider: 'github', full_name: repo_name)
 
-    prof_repo_analysis = ProfileRepoAnalysis.find_by!(profile: profile, repo: repo)
+    prof_repo_analysis = ProfileRepoAnalysis.find_by!(profile: profile,
+                                                      repo: repo)
     prof_repo_analysis.tech_analysis = {
       libs: data['libs'],
       tech: data['tech'],
@@ -54,9 +62,32 @@ class AnalysisEndpoints::ReceiveAnalysisController < ActionController::Base
     }
     prof_repo_analysis.save!
 
+    profile.update_analysis_status
     prof_repo_analysis.project&.aggregate_analysis
 
     render json: { success: true }
+  end
+
+  # POST /tech_analysis/status
+  def tech_analysis_status
+    user_id, repo_name, event = tech_analysis_status_params
+                                .values_at(:user_id, :repo_full_name, :event)
+    profile = User.find(user_id).profile
+
+    if event == 'start'
+      # analysis started
+      repo = Repo.find_by!(provider: 'github',
+                           full_name: repo_name)
+      profile.analysis_status['current_repo'] = {
+        id: repo.id,
+        name: repo.full_name,
+        url: "https://github.com/#{repo.full_name}"
+      }
+      profile.save!
+      render json: { success: true }
+    else
+      render json: { success: false, message: "Unknown event #{event}" }
+    end
   end
 
   private
@@ -65,5 +96,9 @@ class AnalysisEndpoints::ReceiveAnalysisController < ActionController::Base
     authenticate_or_request_with_http_token do |token, _|
       ActiveSupport::SecurityUtils.secure_compare(token, TOKEN)
     end
+  end
+
+  def tech_analysis_status_params
+    params.permit(:user_id, :repo_full_name, :event)
   end
 end

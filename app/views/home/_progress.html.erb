@@ -1,0 +1,16 @@
+<div id="<%= dom_id(profile) %>" class="flex flex-col mt-5 items-center border border-dashed rounded-lg p-5 bg-gray-100">
+  <div class="font-medium">
+    <span class="text-teal-600"><%= profile.analysis_status['analysed_repos_count'] %></span> / <span class="text-teal-800"><%= profile.analysis_status['repos_count'] %></span> repos analysed.
+  </div>
+  <svg width='100%' height='5px' class="mt-2">
+    <g class='bars'>
+      <rect fill='#6EE7B7' width='100%' height='5'></rect>
+      <rect fill='#14B8A6' width="<%= (profile.analysis_status['analysed_repos_count'] * 100.0 / profile.analysis_status['repos_count']).ceil %>%" height='5'></rect>
+    </g>
+  </svg>
+  <% unless profile.analysis_status['current_repo'].nil? %>
+    <span class="mt-2">
+      Analysing <%= link_to(profile.analysis_status['current_repo'].fetch('name'), profile.analysis_status['current_repo'].fetch('url'), class: "text-green-500 hover:text-green-700 transform ease-in-out duration-75") %>
+    </span>
+  <% end %>
+</div>

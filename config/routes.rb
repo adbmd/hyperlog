@@ -9,6 +9,8 @@ Rails.application.routes.draw do
        to: 'analysis_endpoints/receive_analysis#receive_initial_analysis'
   post 'internal/api/tech_analysis',
        to: 'analysis_endpoints/receive_analysis#add_tech_analysis_by_repo'
+  post 'internal/api/tech_analysis/status',
+       to: 'analysis_endpoints/receive_analysis#tech_analysis_status'
 
   devise_for :users, controllers: {
     omniauth_callbacks: 'users/omniauth_callbacks',

@@ -1,11 +1,25 @@
 class Profile < ApplicationRecord
+  include CableReady::Broadcaster
+
   belongs_to :user
+
   has_one :github, dependent: :destroy
+
+  has_many :profile_repo_analyses, dependent: :destroy
   has_many :projects, dependent: :destroy
 
   before_save :contact_info_attrs_nil_if_blank
 
   after_initialize :set_defaults
+
+  after_update do
+    cable_ready['progress'].morph(
+      selector: '#' + ActionView::RecordIdentifier.dom_id(self),
+      html: ApplicationController.render(partial: 'home/progress',
+                                         locals: { profile: self })
+    )
+    cable_ready.broadcast
+  end
 
   validates_each :social_links do |record, attr, value|
     value_dup = value.symbolize_keys
@@ -52,6 +66,26 @@ class Profile < ApplicationRecord
       twitter: 'twitter.com/',
       github: 'github.com/'
     }
+  end
+
+  def update_analysis_status
+    self.analysis_status = {
+      repos_count: profile_repo_analyses.size,
+      analysed_repos_count: profile_repo_analyses
+                           .where.not(tech_analysis: nil)
+                           .size,
+      current_repo: nil,
+      updated_at: Time.current.to_formatted_s(:iso8601)
+    }
+    save!
+  end
+
+  def analysis_completed?
+    return false if analysis_status.nil?
+
+    analysed, total = analysis_status.values_at('analysed_repos_count',
+                                                'repos_count')
+    analysed == total
   end
 
   private
