@@ -124,4 +124,7 @@ Rails.application.configure do
 
   # Endpoint for triggering initial analysis
   config.x.profiles.initial_analysis_invocation_url = ENV['INITIAL_ANALYSIS_INVOCATION_URL']
+
+  # Endpoint for triggering repo analysis
+  config.x.repos.repo_analysis_invocation_url = ENV['REPO_ANALYSIS_INVOCATION_URL']
 end

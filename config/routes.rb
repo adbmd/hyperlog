@@ -26,6 +26,15 @@ Rails.application.routes.draw do
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
   root to: 'home#index'
 
+  scope '/internal/api' do
+    post 'initial_analysis',
+         to: 'analysis_endpoints/receive_analysis#receive_initial_analysis'
+    post 'tech_analysis',
+         to: 'analysis_endpoints/receive_analysis#add_tech_analysis_by_repo'
+    post 'repo_analysis',
+         to: 'analysis_endpoints/receive_analysis#repo_analysis'
+  end
+
   scope '/data_api' do
     get '/user_info', to: 'data_api#user_info'
     get '/user_socials', to: 'data_api#user_socials'

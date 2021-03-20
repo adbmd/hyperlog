@@ -45,6 +45,20 @@ class AnalysisEndpoints::ReceiveAnalysisController < ActionController::Base
     render json: { success: true }
   end
 
+  # POST /repo_analysis
+  def repo_analysis
+    repo_id, analysis = repo_analysis_params.values_at(:repo_id, :analysis)
+
+    repo = Repo.find(repo_id)
+    if repo.update(analysis: analysis)
+      render json: { success: true }
+    else
+      render json: { success: false,
+                     message: repo.errors.full_messages.to_sentence },
+             status: :bad_request
+    end
+  end
+
   # POST /tech_analysis
   def add_tech_analysis_by_repo
     repo_name = params[:repo_full_name]
@@ -91,6 +105,10 @@ class AnalysisEndpoints::ReceiveAnalysisController < ActionController::Base
   end
 
   private
+
+  def repo_analysis_params
+    params.permit(:repo_id, analysis: {})
+  end
 
   def authenticate
     authenticate_or_request_with_http_token do |token, _|

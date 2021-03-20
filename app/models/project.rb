@@ -43,6 +43,34 @@ class Project < ApplicationRecord
     repo.reload
   end
 
+  def start_repo_analysis(force: false)
+    repos_hash = {}
+    repos.each do |repo|
+      # analyse if force is true or last analysis is more than a week old
+      if force || repo.analysis.nil? || repo.analysis['fetched_at'].to_datetime < Time.now - 7.days
+        repos_hash[repo.full_name] = { id: repo.id }
+      end
+    end
+
+    return if repos_hash.empty?
+
+    url = Rails.configuration.x.repos.repo_analysis_invocation_url
+
+    response = Faraday.post(url) do |req|
+      req.body = {
+        repos: repos_hash,
+        token: profile.github.access_token
+      }.to_json
+    end
+
+    if response.success?
+      response.body
+    else
+      raise "Repo analysis failed with status #{response.status}:" \
+            " #{response.body}"
+    end
+  end
+
   def aggregate_analysis
     # initialize new hash, we'll fully recompute the overall analysis
     aggregated = { libs: {}, tags: {}, tech: {} }
