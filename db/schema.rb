@@ -70,6 +70,7 @@ ActiveRecord::Schema.define(version: 2021_03_15_054445) do
     t.string "full_name", null: false
     t.string "avatar_url"
     t.text "description"
+    t.boolean "is_fork"
     t.boolean "is_private"
     t.string "primary_language"
     t.integer "stargazers"
