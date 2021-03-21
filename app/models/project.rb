@@ -5,6 +5,8 @@ class Project < ApplicationRecord
   has_many :repos, -> { distinct }, through: :profile_repo_analyses
 
   validates :profile, presence: true
+  validates :name, presence: true
+  validates :tagline, presence: true
 
   validates_associated :profile
 
