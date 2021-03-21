@@ -2,7 +2,7 @@
   <div class="font-medium">
     <span class="text-teal-600"><%= profile.analysis_status['analysed_repos_count'] %></span> / <span class="text-teal-800"><%= profile.analysis_status['repos_count'] %></span> repos analysed.
   </div>
-  <svg width='100%' height='5px' class="mt-2">
+  <svg width='100%' height='5px' class="mt-2 rounded">
     <g class='bars'>
       <rect fill='#6EE7B7' width='100%' height='5'></rect>
       <rect fill='#14B8A6' width="<%= (profile.analysis_status['analysed_repos_count'] * 100.0 / profile.analysis_status['repos_count']).ceil %>%" height='5'></rect>
