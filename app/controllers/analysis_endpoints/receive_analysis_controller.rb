@@ -29,6 +29,7 @@ class AnalysisEndpoints::ReceiveAnalysisController < ActionController::Base
         repo.avatar_url = repo_info['avatar_url']
         repo.description = repo_info['description']
         repo.is_private = repo_info['is_private']
+        repo.is_fork = repo_info['is_fork']
         repo.primary_language = repo_info['primary_language']
         repo.stargazers = repo_info['stargazers']
         repo.image_url = repo_info['image_url']

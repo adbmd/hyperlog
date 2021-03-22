@@ -5,8 +5,8 @@ class CreateProjects < ActiveRecord::Migration[6.1]
 
       t.string     :name, null: false
       t.string     :tagline, null: false
-      t.string     :description, null: false
-      t.string     :image_url, null: false
+      t.string     :description
+      t.string     :image_url
 
       t.timestamps
     end

@@ -56,8 +56,8 @@ ActiveRecord::Schema.define(version: 2021_03_15_054445) do
     t.bigint "profile_id", null: false
     t.string "name", null: false
     t.string "tagline", null: false
-    t.string "description", null: false
-    t.string "image_url", null: false
+    t.string "description"
+    t.string "image_url"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.jsonb "aggregated_tech_analysis"
@@ -70,6 +70,7 @@ ActiveRecord::Schema.define(version: 2021_03_15_054445) do
     t.string "full_name", null: false
     t.string "avatar_url"
     t.text "description"
+    t.boolean "is_fork"
     t.boolean "is_private"
     t.string "primary_language"
     t.integer "stargazers"

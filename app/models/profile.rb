@@ -8,18 +8,11 @@ class Profile < ApplicationRecord
   has_many :profile_repo_analyses, dependent: :destroy
   has_many :projects, dependent: :destroy
 
-  before_save :contact_info_attrs_nil_if_blank
-
   after_initialize :set_defaults
 
-  after_update do
-    cable_ready['progress'].morph(
-      selector: '#' + ActionView::RecordIdentifier.dom_id(self),
-      html: ApplicationController.render(partial: 'home/progress',
-                                         locals: { profile: self })
-    )
-    cable_ready.broadcast
-  end
+  before_save :contact_info_attrs_nil_if_blank
+
+  after_update :broadcast_progress, if: proc { analysis_status? }
 
   validates_each :social_links do |record, attr, value|
     value_dup = value.symbolize_keys
@@ -110,5 +103,14 @@ class Profile < ApplicationRecord
     contact_info.each do |k, v|
       contact_info[k] = nil if v == ''
     end
+  end
+
+  def broadcast_progress
+    cable_ready['progress'].morph(
+      selector: '#' + ActionView::RecordIdentifier.dom_id(self),
+      html: ApplicationController.render(partial: 'home/progress',
+                                         locals: { profile: self })
+    )
+    cable_ready.broadcast
   end
 end
