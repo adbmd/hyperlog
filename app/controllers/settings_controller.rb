@@ -1,6 +1,7 @@
 class SettingsController < ApplicationController
   layout 'settings'
   def profile
+    @profile = current_user.profile
     @base_social_links = Profile.base_social_links
     @social_links = current_user.profile.social_links.symbolize_keys
     @contact_info = current_user.profile.contact_info
@@ -15,7 +16,28 @@ class SettingsController < ApplicationController
 
   def profile_edit
     user = User.find(current_user.id)
-    if user.update(profile_params)
+
+    params_object = profile_params
+
+    avatar = params_object.delete(:avatar)
+    unless avatar.nil?
+      begin
+        response = Cloudinary::Uploader.upload(avatar.to_io,
+                                               folder: 'user_avatars/',
+                                               public_id: current_user.id,
+                                               width: 256,
+                                               height: 256,
+                                               gravity: 'face',
+                                               crop: 'thumb')
+      rescue CloudinaryException => e
+        redirect_to profile_path,
+                    alert: e.message
+        return
+      end
+      params_object[:avatar_url] = response.fetch('url')
+    end
+
+    if user.update(params_object)
       redirect_to profile_path,
                   notice: 'Updated Successfully'
     else
@@ -59,7 +81,7 @@ class SettingsController < ApplicationController
   end
 
   def profile_params
-    params.require(:user).permit(:first_name, :last_name)
+    params.require(:user).permit(:first_name, :last_name, :avatar)
   end
 
   def contact_info_params

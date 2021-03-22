@@ -34,6 +34,24 @@
           <%= f.text_field :last_name, autocomplete: "family-name", class: "mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-teal-500 focus:border-teal-500 sm:text-sm"%>
         </div>
       </div>
+      <div class="sm:col-span-6">
+        <%= f.label :avatar, class: "block text-sm font-medium text-gray-700" %>
+        <div class="mt-1 flex items-center">
+          <span class="h-12 w-12 rounded-full overflow-hidden bg-gray-100">
+            <% if @user.avatar_url? %>
+              <%= image_tag @user.avatar_url, id: "avatar_image" %>
+            <% else %>
+              <svg class="h-full w-full text-gray-300" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" />
+              </svg>
+            <% end %>
+          </span>
+          <label for="user_avatar" class="ml-5 bg-white py-2 px-3 border border-gray-300 rounded-md shadow-sm text-sm leading-4 font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 cursor-pointer">
+            <span>Change</span>
+            <%= f.file_field :avatar, accept: "image/*", class: "sr-only" %>
+          </label>
+        </div>
+      </div>
       <%= f.submit "Update", class: "inline-flex items-center px-4 py-2 border border-transparent text-sm rounded-md shadow-sm text-white bg-teal-600 cursor-pointer hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500" %>
     <% end %>
   </div>
@@ -137,3 +155,16 @@
     <% end %>
   </div>
 </div>
+<script>
+  var avatar_input = document.getElementById('user_avatar');
+  var avatar_image = document.getElementById('avatar_image');
+  
+  avatar_input.addEventListener('change', function(e){
+    var file = this.files[0];
+    var reader = new FileReader();
+    reader.onload = function(){
+      avatar_image.src = this.result;
+    };
+    reader.readAsDataURL(file);
+  })
+</script>

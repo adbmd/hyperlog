@@ -7,6 +7,8 @@ class Profile < ApplicationRecord
 
   has_many :profile_repo_analyses, dependent: :destroy
   has_many :projects, dependent: :destroy
+  has_many :profile_repo_analyses, dependent: :destroy
+  has_many :repos, through: :profile_repo_analyses
 
   after_initialize :set_defaults
 

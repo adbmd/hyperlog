@@ -74,6 +74,10 @@ gem "cable_ready", "~> 4.5"
 
 gem "rack-cors", "~> 1.1"
 
+gem "cloudinary", "~> 1.19"
+
 gem "phonelib", "~> 0.6.48"
 
 gem "figaro", "~> 1.2"
+
+gem "fastimage", "~> 2.2"

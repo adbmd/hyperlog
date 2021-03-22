@@ -100,10 +100,46 @@ class Project < ApplicationRecord
     aggregated_tech_analysis
   end
 
+  def set_image(img_file)
+    # NOTE: img_file must be an instance of ActionDispatch::Http::UploadedFile
+
+    # check for file size
+    raise('Image size must be less than 5 MB') if img_file.size > 5.megabyte
+
+    # checks for width-height
+    w, h = FastImage.size(img_file)
+
+    unless image_width_range.include?(w)
+      raise('Image width must be between 800 and 1980 pixels')
+    end
+
+    raise('Image width and height must be in the ratio 2:1') unless 2 * h == w
+
+    # upload image to cloudinary
+    begin
+      response = Cloudinary::Uploader.upload(
+        img_file.to_io,
+        folder: "users/#{profile.user_id}/projects/",
+        public_id: id
+      )
+      self.image_url = response.fetch('url')
+      save!
+    rescue CloudinaryException => e
+      raise(e.message)
+    rescue e
+      warn("Unhandled exception #{e}")
+      raise('Something went wrong. Please try again later')
+    end
+  end
+
   private
 
   def max_repos
     5
+  end
+
+  def image_width_range
+    800...1_980
   end
 
   def validate_number_of_repos

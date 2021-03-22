@@ -1,0 +1,8 @@
+<div class="bg-white rounded-lg shadow px-5 py-6 sm:px-6">
+  <div class="pb-5 border-b border-gray-200 sm:flex sm:items-center sm:justify-between">
+    <a href="javascript:history.back()" class="text-base hover:bg-blue-50 p-2 px-3 rounded-md leading-6 font-medium text-blue-500 hover:text-blue-700">
+      &lsaquo; Go Back
+    </a>
+  </div>
+  <%= render partial: "form", locals: { form_model: @project, form_url: update_project_path(@project) } %>
+</div>
