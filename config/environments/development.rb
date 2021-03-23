@@ -83,6 +83,10 @@ Rails.application.configure do
   # Endpoint for triggering initial analysis
   config.x.profiles.initial_analysis_invocation_url = ENV['INITIAL_ANALYSIS_INVOCATION_URL']
 
+  # Endpoint and authentication for Theme Build
+  config.x.profiles.theme_build_invocation_url = ENV['THEME_BUILD_INVOCATION_URL']
+  config.x.profiles.theme_build_basic_auth = [ENV['THEME_BUILD_BASIC_USER'], ENV['THEME_BUILD_BASIC_PASS']]
+
   # Endpoint for triggering repo analysis
   config.x.repos.repo_analysis_invocation_url = ENV['REPO_ANALYSIS_INVOCATION_URL']
 end

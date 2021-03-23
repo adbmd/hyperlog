@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_15_054445) do
+ActiveRecord::Schema.define(version: 2021_03_23_095847) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -49,6 +49,8 @@ ActiveRecord::Schema.define(version: 2021_03_15_054445) do
     t.jsonb "social_links", default: {}, null: false
     t.jsonb "analysis_status"
     t.jsonb "contact_info"
+    t.bigint "theme_id"
+    t.index ["theme_id"], name: "index_profiles_on_theme_id"
     t.index ["user_id"], name: "index_profiles_on_user_id", unique: true
   end
 
@@ -80,6 +82,16 @@ ActiveRecord::Schema.define(version: 2021_03_15_054445) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["full_name"], name: "index_repos_on_full_name"
     t.index ["provider_repo_id", "provider"], name: "index_repos_on_provider_repo_id_and_provider", unique: true
+  end
+
+  create_table "themes", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "preview_url"
+    t.string "image_url"
+    t.boolean "active", default: true
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["name"], name: "index_themes_on_name", unique: true
   end
 
   create_table "users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -122,6 +134,7 @@ ActiveRecord::Schema.define(version: 2021_03_15_054445) do
   add_foreign_key "profile_repo_analyses", "profiles"
   add_foreign_key "profile_repo_analyses", "projects"
   add_foreign_key "profile_repo_analyses", "repos"
+  add_foreign_key "profiles", "themes"
   add_foreign_key "profiles", "users"
   add_foreign_key "projects", "profiles"
 end

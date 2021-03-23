@@ -2,15 +2,16 @@ class Profile < ApplicationRecord
   include CableReady::Broadcaster
 
   belongs_to :user
+  belongs_to :theme, dependent: nil
 
   has_one :github, dependent: :destroy
 
   has_many :profile_repo_analyses, dependent: :destroy
   has_many :projects, dependent: :destroy
-  has_many :profile_repo_analyses, dependent: :destroy
   has_many :repos, through: :profile_repo_analyses
 
   after_initialize :set_defaults
+  before_save :contact_info_attrs_nil_if_blank
 
   before_save :contact_info_attrs_nil_if_blank
 
@@ -35,6 +36,7 @@ class Profile < ApplicationRecord
   def set_defaults
     return unless new_record?
 
+    self.theme ||= Theme.first
     self.tagline ||= ''
     self.social_links ||= {}
     self.contact_info ||= {
@@ -61,6 +63,23 @@ class Profile < ApplicationRecord
       twitter: 'twitter.com/',
       github: 'github.com/'
     }
+  end
+
+  def self.valid_themes
+    Theme.where(active: true).all
+  end
+
+  def start_theme_build
+    url = Rails.configuration.x.profiles.theme_build_invocation_url
+    basic_creds = Rails.configuration.x.profiles.theme_build_basic_auth
+
+    conn = Faraday.new(url)
+    conn.basic_auth(*basic_creds)
+    conn.post do |req|
+      req.headers['Content-Type'] = 'application/json'
+      req.body = { uuid: user.id, username: user.username,
+                   themeName: theme.name }.to_json
+    end
   end
 
   def update_analysis_status

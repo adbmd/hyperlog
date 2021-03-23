@@ -10,7 +10,10 @@ class SettingsController < ApplicationController
 
   def account; end
 
-  def themes; end
+  def themes
+    @valid_themes = Profile.valid_themes
+    @current_theme = current_user.profile.theme
+  end
 
   def password; end
 
@@ -58,6 +61,20 @@ class SettingsController < ApplicationController
     end
   end
 
+  def themes_edit
+    profile = current_user.profile
+    theme = Theme.find(theme_params[:theme])
+    if profile.update(theme: theme)
+      profile.start_theme_build
+      redirect_to themes_path,
+                  notice: 'Theme updated successfully! Your new portfolio' \
+                          ' will be up in a few minutes'
+    else
+      redirect_to themes_path,
+                  alert: profile.errors.full_messages.to_sentence
+    end
+  end
+
   def contact_info_edit
     profile = current_user.profile
 
@@ -80,6 +97,8 @@ class SettingsController < ApplicationController
     end
   end
 
+  private
+
   def profile_params
     params.require(:user).permit(:first_name, :last_name, :avatar)
   end
@@ -93,7 +112,9 @@ class SettingsController < ApplicationController
                                     social_links: Profile.valid_socials)
   end
 
-  private
+  def theme_params
+    params.require(:theme).permit(:theme)
+  end
 
   def resource_name
     :user

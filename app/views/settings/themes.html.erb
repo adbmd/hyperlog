@@ -1,1 +1,32 @@
-<h1>Themes</h1>
+<div>
+  <h2 class="text-xl leading-6 font-medium text-gray-900">Themes</h2>
+  <p class="mt-1 text-sm text-gray-500">
+    Want to add your own flair or just a pre-built template? We got you covered.
+  </p>
+</div>
+<div class="relative mt-3">
+  <div class="absolute inset-0 flex items-center" aria-hidden="true">
+    <div class="w-full border-t border-gray-300"></div>
+  </div>
+</div>
+<div class="mt-10" x-data="{selected: <%= @current_theme.id %>}">
+  <%= form_with url: themes_path, method: :put, scope: :theme do |f| %>
+    <ul class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      <% @valid_themes.each do |theme| %>
+        <!-- Selected Class: "col-span-1 bg-teal-50 rounded-lg shadow divide-y divide-gray-200 ring ring-teal-300 cursor-pointer" -->
+        <li @click="selected = <%= theme.id %>" :class="selected === <%= theme.id %> ? 'bg-teal-50 ring ring-teal-300' : 'bg-white'" class="col-span-1 bg-white rounded-lg shadow divide-y divide-gray-200 cursor-pointer transform duration-150 ease-in-out">
+          <div class="flex w-full flex-col">
+            <img class="rounded-t-lg " src="https://via.placeholder.com/300x150" alt="<%= theme.name %>">
+            <div class="flex px-5 py-2 items-center">
+              <!-- Selected Class: "font-medium px-5 py-3" -->
+              <span class="flex-1"><%= theme.name %></span>
+              <%= link_to('Preview', theme.preview_url || '#', target: "_blank", rel: "noopener noreferrer", class: "inline-flex flex-2 items-center px-2.5 h-8 border border-transparent text-xs font-medium rounded text-blue-700 bg-blue-100 hover:bg-blue-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500") %>
+            </div>
+          </div>
+        </li>
+      <% end %>
+    </ul>
+    <input type="hidden" name="theme[theme]" x-bind:value="selected">
+    <%= f.submit 'Set Theme', class: "inline-flex mt-5 items-center px-4 py-2 border border-transparent text-sm rounded-md shadow-sm text-white bg-teal-600 hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500" %>
+  <% end %>
+</div>
