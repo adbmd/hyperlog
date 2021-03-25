@@ -83,7 +83,10 @@ test:
 # for a full overview on how database connection configuration can be specified.
 #
 production:
-  <<: *default
-  database: hyperlog_rails_production
-  username: hyperlog_rails
-  password: <%= ENV['HYPERLOG_RAILS_DATABASE_PASSWORD'] %>
+  # note: doesn't inherit from default
+  adapter: postgresql
+  encoding: unicode
+  host: <%= ENV['HYPERLOG_DATABASE_HOST'] %>
+  username: <%= ENV['HYPERLOG_DATABASE_USER'] %>
+  password: <%= ENV['HYPERLOG_DATABASE_PASSWORD'] %>
+  database: <%= ENV['HYPERLOG_DATABASE_NAME'] %>
