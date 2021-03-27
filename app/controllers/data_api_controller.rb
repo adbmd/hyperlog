@@ -26,16 +26,7 @@ class DataApiController < ActionController::API
 
   # GET /projects/:id
   def project_info
-    id_or_slug = params[:id]
-
-    # find project by id or slug
-    project =
-      if id_or_slug && uuid?(id_or_slug)
-        @portfolio_user.profile.projects.find(id_or_slug)
-      else
-        @portfolio_user.profile.projects.friendly.find(id_or_slug)
-      end
-
+    project = @portfolio_user.profile.projects.friendly.find(params[:id])
     render json: project_info_from_project(project)
   end
 
@@ -43,28 +34,13 @@ class DataApiController < ActionController::API
   def project_repo
     project_id, repo_id = params.values_at(:project_id, :repo_id)
 
-    project =
-      if project_id && uuid?(project_id)
-        @portfolio_user.profile.projects.find(project_id)
-      else
-        @portfolio_user.profile.projects.friendly.find(project_id)
-      end
-
-    repo =
-      if repo_id && uuid?(repo_id)
-        project.repos.find(repo_id)
-      else
-        project.repos.friendly.find(repo_id)
-      end
+    project = @portfolio_user.profile.projects.friendly.find(project_id)
+    repo = project.repos.friendly.find(repo_id)
 
     render json: repo_info_from_project_and_repo(project, repo)
   end
 
   private
-
-  def uuid?(value)
-    value =~ /^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/
-  end
 
   def extract_portfolio_user
     portfolio_user_id = request.headers['x-portfolio-user-id']
@@ -128,7 +104,8 @@ class DataApiController < ActionController::API
 
   def project_info_from_project(project)
     project.as_json(
-      only: %i[id name slug tagline description image_url aggregated_tech_analysis],
+      only: %i[id name slug tagline description image_url
+               aggregated_tech_analysis],
       include: {
         repos: {
           only: %i[id slug full_name description primary_language stargazers

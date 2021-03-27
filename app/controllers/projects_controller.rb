@@ -84,6 +84,14 @@ class ProjectsController < ApplicationController
     end
   end
 
+  def delete
+    @project = @projects.friendly.find(params[:id])
+    @project.destroy
+
+    redirect_to projects_home_path,
+                notice: "Project '#{@project.name}' was deleted!"
+  end
+
   private
 
   def project_params

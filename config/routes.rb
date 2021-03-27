@@ -61,5 +61,6 @@ Rails.application.routes.draw do
     get '/:id', to: 'projects#show', as: 'project'
     put '/:id', to: 'projects#update', as: 'update_project'
     get '/:id/edit', to: 'projects#edit', as: 'edit_project'
+    delete '/:id', to: 'projects#delete', as: 'delete_project'
   end
 end
