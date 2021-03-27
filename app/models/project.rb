@@ -1,4 +1,7 @@
 class Project < ApplicationRecord
+  extend FriendlyId
+  friendly_id :name, use: :slugged
+
   belongs_to :profile
 
   has_many :profile_repo_analyses, -> { distinct }, dependent: :nullify

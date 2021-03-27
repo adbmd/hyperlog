@@ -81,3 +81,5 @@ gem "phonelib", "~> 0.6.48"
 gem "figaro", "~> 1.2"
 
 gem "fastimage", "~> 2.2"
+
+gem "friendly_id", "~> 5.4"

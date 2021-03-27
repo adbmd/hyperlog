@@ -97,7 +97,7 @@ class DataApiController < ActionController::API
 
   def project_info_from_project(project)
     project.as_json(
-      only: %i[id name tagline description image_url aggregated_tech_analysis],
+      only: %i[id name slug tagline description image_url aggregated_tech_analysis],
       include: {
         repos: {
           only: %i[id full_name description primary_language stargazers
@@ -109,7 +109,7 @@ class DataApiController < ActionController::API
   end
 
   def repo_info_from_project_and_repo(project, repo)
-    repo_attributes = repo.as_json only: %i[id full_name description image_url
+    repo_attributes = repo.as_json only: %i[id full_name slug description image_url
                                             primary_language stargazers image_url analysis]
     pr_analysis = project.profile_repo_analyses.where(repo: repo).first
     pr_analysis_attributes = pr_analysis.as_json only: %i[contributions
