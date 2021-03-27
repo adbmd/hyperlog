@@ -1,6 +1,7 @@
 class DataApiController < ActionController::API
   before_action :extract_portfolio_user
-  before_action :validate_portfolio_user
+  # before_action :validate_portfolio_user
+  before_action :skip_origin_validation
 
   # GET /user_info
   def user_info
@@ -81,16 +82,20 @@ class DataApiController < ActionController::API
     end
   end
 
-  def validate_portfolio_user
-    request_origin = request.headers.fetch('origin')
-    portfolio_username, _domain = request_origin.split('.', 2)
+  # def validate_portfolio_user
+  #   request_origin = request.headers.fetch('origin')
+  #   portfolio_username, _domain = request_origin.split('.', 2)
 
-    if @_portfolio_user.username == portfolio_username
-      @portfolio_user = @_portfolio_user
-    else
-      render json: { message: "Portfolio ID doesn't match subdomain" },
-             status: :bad_request
-    end
+  #   if @_portfolio_user.username == portfolio_username
+  #     @portfolio_user = @_portfolio_user
+  #   else
+  #     render json: { message: "Portfolio ID doesn't match subdomain" },
+  #            status: :bad_request
+  #   end
+  # end
+
+  def skip_origin_validation
+    @portfolio_user = @_portfolio_user
   end
 
   def user_info_from_user(user)
