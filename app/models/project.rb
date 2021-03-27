@@ -1,4 +1,7 @@
 class Project < ApplicationRecord
+  extend FriendlyId
+  friendly_id :name, use: :slugged
+
   belongs_to :profile
 
   has_many :profile_repo_analyses, -> { distinct }, dependent: :nullify
@@ -77,6 +80,8 @@ class Project < ApplicationRecord
     # initialize new hash, we'll fully recompute the overall analysis
     aggregated = { libs: {}, tags: {}, tech: {} }
     profile_repo_analyses.pluck(:tech_analysis).each do |tech_analysis|
+      next if tech_analysis.blank?
+
       tech_analysis.symbolize_keys!
       # category is one of [:libs, :tech, :tags]
       tech_analysis.each do |category, category_stats|

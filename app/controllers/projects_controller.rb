@@ -14,11 +14,11 @@ class ProjectsController < ApplicationController
   def new; end
 
   def show
-    @project = @projects.find(params[:id])
+    @project = @projects.friendly.find(params[:id])
   end
 
   def edit
-    @project = @projects.find(params[:id])
+    @project = @projects.friendly.find(params[:id])
   end
 
   def create
@@ -54,7 +54,7 @@ class ProjectsController < ApplicationController
   end
 
   def update
-    @project = @projects.find(params[:id])
+    @project = @projects.friendly.find(params[:id])
     update_params = project_params
     selected_repos = JSON.parse(update_params.delete(:repos))
     selected_repos = selected_repos.map do |repo|

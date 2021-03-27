@@ -1,4 +1,7 @@
 class Repo < ApplicationRecord
+  extend FriendlyId
+  friendly_id :full_name, use: :slugged
+
   has_many :profile_repo_analyses, dependent: :destroy
   has_many :profiles, through: :profile_repo_analyses
   has_many :projects, through: :profile_repo_analyses
