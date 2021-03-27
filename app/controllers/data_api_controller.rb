@@ -4,20 +4,17 @@ class DataApiController < ActionController::API
 
   # GET /user_info
   def user_info
-    render json: user_info_from_user(@portfolio_user)
+    user_info = user_info_from_user(@portfolio_user)
+    user_socials = user_socials_from_user(@portfolio_user)
+    user_contacts = user_contacts_from_user(@portfolio_user)
+
+    user_info.merge!(social_links: user_socials, contact_info: user_contacts)
+
+    render json: user_info
   end
 
   # GET /user_socials
   def user_socials
-    raw_socials = @portfolio_user.profile.social_links.symbolize_keys
-    socials_with_prefix = {}.tap do |socials|
-      raw_socials.each do |provider, username|
-        socials[provider] = {
-          url_prefix: "https://#{Profile.base_social_links.fetch(provider)}",
-          username: username
-        }
-      end
-    end
     render json: socials_with_prefix
   end
 
@@ -74,6 +71,24 @@ class DataApiController < ActionController::API
     user_attributes = user.as_json only: %i[username first_name last_name]
     profile_attributes = user.profile.as_json only: %i[tagline about]
     user_attributes.merge(profile_attributes)
+  end
+
+  def user_socials_from_user(user)
+    raw_socials = user.profile.social_links.symbolize_keys
+    {}.tap do |socials|
+      raw_socials.each do |provider, username|
+        next if username.blank?
+
+        socials[provider] = {
+          url_prefix: "https://#{Profile.base_social_links.fetch(provider)}",
+          username: username
+        }
+      end
+    end
+  end
+
+  def user_contacts_from_user(user)
+    user.profile.contact_info
   end
 
   def projects_info_from_profile(profile)
