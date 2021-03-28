@@ -7,8 +7,6 @@ ruby '3.0.0'
 gem 'rails', '~> 6.1.3.1'
 # Use postgresql as the database for Active Record
 gem 'pg', '~> 1.1'
-# Use Passenger as the app server
-gem 'passenger', '~> 6.0', require: 'phusion_passenger/rack_handler'
 # Use SCSS for stylesheets
 gem 'sass-rails', '>= 6'
 # Transpile app-like JavaScript. Read more: https://github.com/rails/webpacker
@@ -38,6 +36,7 @@ gem 'devise_invitable', '~> 2.0.0'
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
+  gem 'puma', '~> 5.0'
 end
 
 group :development do
@@ -62,24 +61,29 @@ group :test do
   gem 'webdrivers'
 end
 
+group :production do
+  # Use Passenger as the app server
+  gem 'passenger', '~> 6.0', require: 'phusion_passenger/rack_handler'
+end
+
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
 
 # required in addition to omniauth for analysis connections oauth
-gem "oauth2", "~> 1.4"
+gem 'oauth2', '~> 1.4'
 
-gem "faraday", "~> 1.3"
+gem 'faraday', '~> 1.3'
 
-gem "cable_ready", "~> 4.5"
+gem 'cable_ready', '~> 4.5'
 
-gem "rack-cors", "~> 1.1"
+gem 'rack-cors', '~> 1.1'
 
-gem "cloudinary", "~> 1.19"
+gem 'cloudinary', '~> 1.19'
 
-gem "phonelib", "~> 0.6.48"
+gem 'phonelib', '~> 0.6.48'
 
-gem "figaro", "~> 1.2"
+gem 'figaro', '~> 1.2'
 
-gem "fastimage", "~> 2.2"
+gem 'fastimage', '~> 2.2'
 
-gem "friendly_id", "~> 5.4"
+gem 'friendly_id', '~> 5.4'
