@@ -58,8 +58,6 @@ Devise.setup do |config|
   # note that it will be overwritten if you use your own mailer class
   # with default "from" parameter.
   config.mailer_sender = 'Aditya Giri <aditya@hyperlog.io>'
-  config.x.users.mailer_reply_to = 'Aditya Giri <aditya@hyperlog.io>, ' \
-                                   'Kaustubh Maske Patil <kaustubh@hyperlog.io>'
 
   # Configure the class responsible to send e-mails.
   config.mailer = 'UserMailer'

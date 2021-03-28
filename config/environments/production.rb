@@ -72,6 +72,8 @@ Rails.application.configure do
     authentication: 'login',
     enable_starttls_auto: true
   }
+  config.x.users.mailer_reply_to = 'Aditya Giri <aditya@hyperlog.io>, ' \
+                                   'Kaustubh Maske Patil <kaustubh@hyperlog.io>'
 
   # Ignore bad email addresses and do not raise email delivery errors.
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.
