@@ -63,6 +63,15 @@ Rails.application.configure do
   # config.active_job.queue_name_prefix = "hyperlog_rails_production"
 
   config.action_mailer.perform_caching = false
+  config.action_mailer.smtp_settings = {
+    address: ENV['AWS_SES_SERVER_NAME'],
+    port: 587,
+    domain: 'hyperlog.io',
+    user_name: ENV['AWS_SES_USERNAME'],
+    password: ENV['AWS_SES_PASSWORD'],
+    authentication: 'login',
+    enable_starttls_auto: true
+  }
 
   # Ignore bad email addresses and do not raise email delivery errors.
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.
