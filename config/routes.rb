@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
   get  'home/index'
+  get  'setup', to: 'setup#index'
   get  'profiles/oauth/github',
        to: 'profiles/oauth_github#oauth_initiate'
   get  'profiles/oauth/github/callback',
