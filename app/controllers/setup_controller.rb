@@ -1,4 +1,6 @@
 class SetupController < ApplicationController
   layout 'setup'
-  def index; end
+  def index
+    @user = current_user
+  end
 end

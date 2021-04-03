@@ -11,7 +11,7 @@
     <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
     <style>
       body {
-        background: linear-gradient(-45deg, #4ade80, #14b8a6, #3b82f6, #6366f1);
+        background: linear-gradient(-45deg, #0D9488, #14B8A6, #0D9488, #14B8A6);
         background-size: 400% 400%;
         animation: gradient 15s ease infinite;
       }
@@ -30,13 +30,17 @@
     </style>
   </head>
   <body>
-    <div className="bg-scroll min-h-screen">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="max-w-3xl mx-auto">
-          <div className="flex">
-            <%= image_tag "logo-white.svg", class: "mt-10 w-16 h-16 m-auto" %>
+    <div class="bg-scroll min-h-screen">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="max-w-3xl mx-auto">
+          <div class="flex">
+            <%= image_tag "logo-white.svg", class: "my-10 w-16 h-16 m-auto" %>
           </div>
-          <%= yield %>
+          <div class="bg-white overflow-hidden shadow rounded-lg">
+            <div class="px-4 py-5 sm:p-6">
+              <%= yield %>
+            </div>
+          </div>
         </div>
       </div>
     </div>
