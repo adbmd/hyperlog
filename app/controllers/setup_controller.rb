@@ -1,3 +1,12 @@
+# This file contains 4 steps for the user.
+#
+# Step one: Connect with Github
+# Step Two: Enter user information
+# Step Three: Enter about field data
+# Step four: Select a theme
+#
+# Upon Successfully completing everything, user would be redirected to the
+# projects page.
 class SetupController < ApplicationController
   layout 'setup'
 
@@ -54,7 +63,7 @@ class SetupController < ApplicationController
   def step_four_submit
     current_user.setup_step = 0
     current_user.save
-    redirect_to('/', notice: 'Setup Completed Successfully!')
+    redirect_to('/projects', notice: 'Setup Completed Successfully!')
   end
 
   def previous_step

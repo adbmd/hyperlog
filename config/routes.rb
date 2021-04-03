@@ -26,6 +26,7 @@ Rails.application.routes.draw do
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
   root to: 'home#index'
 
+  # Each step is further described in the setup controller
   scope '/setup' do
     get '/', to: 'setup#index', as: 'setup'
     get '/1', to: 'setup#step_one', as: 'setup_step_one'
@@ -38,9 +39,7 @@ Rails.application.routes.draw do
     post '/3', to: 'setup#step_three_submit', as: 'setup_step_three_submit'
     post '/4', to: 'setup#step_four_submit', as: 'setup_step_four_submit'
 
-    post '/next_step', to: 'setup#next_step', as: 'setup_next_step'
     post '/previous_step', to: 'setup#previous_step', as: 'setup_previous_step'
-    post '/complete_setup', to: 'setup#complete_setup', as: 'setup_complete'
   end
 
   scope '/internal/api' do
