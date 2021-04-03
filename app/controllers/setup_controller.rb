@@ -28,6 +28,9 @@ class SetupController < ApplicationController
     if current_user.setup_step != 2
       redirect_to("/setup/#{current_user.setup_step}")
     end
+    @base_social_links = Profile.base_social_links
+    @social_links = current_user.profile.social_links.symbolize_keys
+    @user = current_user
   end
 
   def step_three
@@ -49,9 +52,17 @@ class SetupController < ApplicationController
   end
 
   def step_two_submit
-    current_user.setup_step = 3
-    current_user.save
-    redirect_to("/setup/#{current_user.setup_step}")
+    profile = current_user.profile
+
+    if profile.update!(social_params)
+      current_user.setup_step = 3
+      current_user.save
+      redirect_to("/setup/#{current_user.setup_step}",
+                  notice: 'Social Profiles Added Successfully')
+    else
+      redirect_to("/setup/#{current_user.setup_step}",
+                  alert: 'Something went wrong. Please try again.')
+    end
   end
 
   def step_three_submit
@@ -70,5 +81,12 @@ class SetupController < ApplicationController
     current_user.setup_step -= 1
     current_user.save
     redirect_to("/setup/#{current_user.setup_step}")
+  end
+
+  private
+
+  def social_params
+    params.require(:profile).permit(:tagline,
+                                    social_links: Profile.valid_socials)
   end
 end

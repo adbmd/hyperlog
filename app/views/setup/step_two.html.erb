@@ -1,8 +1,81 @@
 <%= render "steps" %>
-Two
-<div class="pt-5">
-  <div class="flex justify-between">
-    <%= button_to "Previous", setup_previous_step_path, method: :post, class: "ml-3 inline-flex justify-center py-2 px-4 border border-gray-400 shadow-sm text-sm font-medium rounded-md text-teal-600 bg-white hover:bg-gray-200 cursor-pointer focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500" %>
-    <%= button_to "Next", setup_step_two_submit_path, method: :post, class: "ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-teal-600 hover:bg-teal-700 focus:outline-none focus:ring-2 cursor-pointer focus:ring-offset-2 focus:ring-teal-500" %>
+<%= form_with model: @user.profile, url: setup_step_two_submit_path, html: { method: :post, class: "flex-grow space-y-4 mt-5" } do |f| %>
+  <div class="bg-white">
+    <div>
+      <%= f.label :tagline, class: "block text-sm font-medium text-gray-700" %>
+      <%= f.text_field :tagline, value: current_user.profile.tagline, class: "mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-teal-500 focus:border-teal-500 sm:text-sm"%>
+    </div>
+    <br />
+    <div class="grid grid-cols-6 gap-6">
+      <div class="col-span-6 sm:col-span-3">
+        <%= f.label 'social_links[linkedin]', 'LinkedIn', class: "block text-sm font-medium text-gray-700" %>
+        <div class="mt-1 flex rounded-md shadow-sm">
+          <span class="bg-gray-50 border border-gray-300 rounded-l-md px-3 inline-flex items-center text-gray-500 sm:text-sm">
+            <%= @base_social_links[:linkedin] %>
+          </span>
+          <%= f.text_field 'social_links[linkedin]', value: @social_links.fetch(:linkedin, ''), class: "focus:ring-teal-500 focus:border-teal-500 flex-grow block w-full min-w-0 rounded-none rounded-r-md sm:text-sm border-gray-300", placeholder: "Username"%>
+        </div>
+      </div>
+      <div class="col-span-6 sm:col-span-3">
+        <%= f.label 'social_links[devto]', 'Dev.to', class: "block text-sm font-medium text-gray-700" %>
+        <div class="mt-1 flex rounded-md shadow-sm">
+          <span class="bg-gray-50 border border-gray-300 rounded-l-md px-3 inline-flex items-center text-gray-500 sm:text-sm">
+            <%= @base_social_links[:devto] %>
+          </span>
+          <%= f.text_field 'social_links[devto]', value: @social_links.fetch(:devto, ''), class: "focus:ring-teal-500 focus:border-teal-500 flex-grow block w-full min-w-0 rounded-none rounded-r-md sm:text-sm border-gray-300", placeholder: "Username"%>
+        </div>
+      </div>
+      <div class="col-span-6 sm:col-span-3">
+        <%= f.label 'social_links[stackoverflow]', 'Stack Overflow', class: "block text-sm font-medium text-gray-700" %>
+        <div class="mt-1 flex rounded-md shadow-sm">
+          <span class="bg-gray-50 border border-gray-300 rounded-l-md px-3 inline-flex items-center text-gray-500 sm:text-sm">
+            <%= @base_social_links[:stackoverflow] %>
+          </span>
+          <%= f.text_field 'social_links[stackoverflow]', value: @social_links.fetch(:stackoverflow, ''), class: "focus:ring-teal-500 focus:border-teal-500 flex-grow block w-full min-w-0 rounded-none rounded-r-md sm:text-sm border-gray-300", placeholder: "User Number"%>
+        </div>
+      </div>
+      <div class="col-span-6 sm:col-span-3">
+        <%= f.label 'social_links[dribbble]', 'Dribbble', class: "block text-sm font-medium text-gray-700" %>
+        <div class="mt-1 flex rounded-md shadow-sm">
+          <span class="bg-gray-50 border border-gray-300 rounded-l-md px-3 inline-flex items-center text-gray-500 sm:text-sm">
+            <%= @base_social_links[:dribbble] %>
+          </span>
+          <%= f.text_field 'social_links[dribbble]', value: @social_links.fetch(:dribbble, ''), class: "focus:ring-teal-500 focus:border-teal-500 flex-grow block w-full min-w-0 rounded-none rounded-r-md sm:text-sm border-gray-300", placeholder: "Username"%>
+        </div>
+      </div>
+      <div class="col-span-6 sm:col-span-3">
+        <%= f.label 'social_links[facebook]', 'Facebook', class: "block text-sm font-medium text-gray-700" %>
+        <div class="mt-1 flex rounded-md shadow-sm">
+          <span class="bg-gray-50 border border-gray-300 rounded-l-md px-3 inline-flex items-center text-gray-500 sm:text-sm">
+            <%= @base_social_links[:facebook] %>
+          </span>
+          <%= f.text_field 'social_links[facebook]', value: @social_links.fetch(:facebook, ''), class: "focus:ring-teal-500 focus:border-teal-500 flex-grow block w-full min-w-0 rounded-none rounded-r-md sm:text-sm border-gray-300", placeholder: "Username"%>
+        </div>
+      </div>
+      <div class="col-span-6 sm:col-span-3">
+        <%= f.label 'social_links[twitter]', 'Twitter', class: "block text-sm font-medium text-gray-700" %>
+        <div class="mt-1 flex rounded-md shadow-sm">
+          <span class="bg-gray-50 border border-gray-300 rounded-l-md px-3 inline-flex items-center text-gray-500 sm:text-sm">
+            <%= @base_social_links[:twitter] %>
+          </span>
+          <%= f.text_field 'social_links[twitter]', value: @social_links.fetch(:twitter, ''), class: "focus:ring-teal-500 focus:border-teal-500 flex-grow block w-full min-w-0 rounded-none rounded-r-md sm:text-sm border-gray-300", placeholder: "Username"%>
+        </div>
+      </div>
+      <div class="col-span-6 sm:col-span-3">
+        <%= f.label 'social_links[github]', 'GitHub', class: "block text-sm font-medium text-gray-700" %>
+        <div class="mt-1 flex rounded-md shadow-sm">
+          <span class="bg-gray-50 border border-gray-300 rounded-l-md px-3 inline-flex items-center text-gray-500 sm:text-sm">
+            <%= @base_social_links[:github] %>
+          </span>
+          <%= f.text_field 'social_links[github]', value: @social_links.fetch(:github, ''), class: "focus:ring-teal-500 focus:border-teal-500 flex-grow block w-full min-w-0 rounded-none rounded-r-md sm:text-sm border-gray-300", placeholder: "Username"%>
+        </div>
+      </div>
+    </div>
   </div>
-</div>
+  <div class="pt-5">
+    <div class="flex justify-between">
+      <%= f.submit "Next", class: "ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-teal-600 hover:bg-teal-700 focus:outline-none focus:ring-2 cursor-pointer focus:ring-offset-2 focus:ring-teal-500" %>
+    </div>
+  </div>
+<% end %>
+<%= button_to "Previous", setup_previous_step_path, method: :post, class: "ml-3 inline-flex justify-center py-2 px-4 border border-gray-400 shadow-sm text-sm font-medium rounded-md text-teal-600 bg-white hover:bg-gray-200 cursor-pointer focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500" %>
