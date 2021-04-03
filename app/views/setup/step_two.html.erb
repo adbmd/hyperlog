@@ -1,9 +1,9 @@
 <%= render "steps" %>
-<%= form_with model: @user.profile, url: setup_step_two_submit_path, html: { method: :post, class: "flex-grow space-y-4 mt-5" } do |f| %>
+<%= form_with model: @user.profile, url: setup_step_two_submit_path, html: { method: :post, class: "flex-grow space-y-4 mt-5 max-w-2xl mx-auto" } do |f| %>
   <div class="bg-white">
     <div>
       <%= f.label :tagline, class: "block text-sm font-medium text-gray-700" %>
-      <%= f.text_field :tagline, value: current_user.profile.tagline, class: "mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-teal-500 focus:border-teal-500 sm:text-sm"%>
+      <%= f.text_field :tagline, value: current_user.profile.tagline, placeholder: "Developer by day, Batman by night", class: "mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-teal-500 focus:border-teal-500 sm:text-sm"%>
     </div>
     <br />
     <div class="grid grid-cols-6 gap-6">

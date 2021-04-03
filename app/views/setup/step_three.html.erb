@@ -1,17 +1,17 @@
 <%= render "steps" %>
-<%= form_with model: @user.profile, url: setup_step_three_submit_path, html: { method: :post, class: "flex-grow space-y-4" } do |f| %>
+<%= form_with model: @user.profile, url: setup_step_three_submit_path, html: { method: :post, class: "flex-grow space-y-4 max-w-2xl mx-auto" } do |f| %>
   <div class="mt-6 grid grid-cols-12 gap-6">
     <div class="col-span-12">
       <%= f.label 'contact_info[email]', 'Email Address', class: "block text-sm font-medium text-gray-700" %>
-      <%= f.email_field 'contact_info[email]', value: @contact_info.fetch('email'), placeholder: 'yourname@example.com', class: "mt-1 block w-3/4 border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-teal-500 focus:border-teal-500 sm:text-sm" %>
+      <%= f.email_field 'contact_info[email]', value: @contact_info.fetch('email'), placeholder: 'yourname@example.com', class: "mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-teal-500 focus:border-teal-500 sm:text-sm" %>
     </div>
     <div class="col-span-12">
       <%= f.label 'contact_info[phone]', 'Phone Number', class: "block text-sm font-medium text-gray-700" %>
-      <%= f.text_field 'contact_info[phone]', value: @contact_info.fetch('phone'), placeholder: 'Prefer adding your country code (e.g. +1 for US, +91 for India)', class: "mt-1 block w-3/4 border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-teal-500 focus:border-teal-500 sm:text-sm" %>
+      <%= f.text_field 'contact_info[phone]', value: @contact_info.fetch('phone'), placeholder: 'Prefer adding your country code (e.g. +1 for US, +91 for India)', class: "mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-teal-500 focus:border-teal-500 sm:text-sm" %>
     </div>
     <div class="col-span-12">
       <%= f.label 'contact_info[location]', 'Location', class: "block text-sm font-medium text-gray-700" %>
-      <%= f.text_field 'contact_info[location]', value: @contact_info.fetch('location'), placeholder: 'Geek City, Developer Heaven.', class: "mt-1 block w-3/4 border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-teal-500 focus:border-teal-500 sm:text-sm" %>
+      <%= f.text_field 'contact_info[location]', value: @contact_info.fetch('location'), placeholder: 'Geek City, Developer Heaven.', class: "mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-teal-500 focus:border-teal-500 sm:text-sm" %>
     </div>
   </div>
   <div class="pt-5">
