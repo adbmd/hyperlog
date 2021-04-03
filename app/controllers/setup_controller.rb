@@ -37,6 +37,8 @@ class SetupController < ApplicationController
     if current_user.setup_step != 3
       redirect_to("/setup/#{current_user.setup_step}")
     end
+    @contact_info = current_user.profile.contact_info
+    @user = current_user
   end
 
   def step_four
@@ -66,9 +68,29 @@ class SetupController < ApplicationController
   end
 
   def step_three_submit
-    current_user.setup_step = 4
-    current_user.save
-    redirect_to("/setup/#{current_user.setup_step}")
+    profile = current_user.profile
+
+    params_object = contact_info_params
+
+    if params_object.dig('contact_info', 'phone')
+      phone = Phonelib.parse(params_object.dig('contact_info', 'phone'))
+      params_object[:contact_info][:phone] =
+        if phone.country_code
+          phone.international
+        else
+          phone.e164
+        end
+    end
+
+    if profile.update(params_object)
+      current_user.setup_step = 4
+      current_user.save
+      redirect_to "/setup/#{current_user.setup_step}",
+                  notice: 'Contact Info Added'
+    else
+      redirect_to "/setup/#{current_user.setup_step}",
+                  alert: profile.errors.full_messages.to_sentence
+    end
   end
 
   def step_four_submit
@@ -88,5 +110,9 @@ class SetupController < ApplicationController
   def social_params
     params.require(:profile).permit(:tagline,
                                     social_links: Profile.valid_socials)
+  end
+
+  def contact_info_params
+    params.require(:profile).permit(contact_info: %i[email phone location])
   end
 end
