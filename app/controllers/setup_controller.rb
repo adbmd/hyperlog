@@ -45,6 +45,8 @@ class SetupController < ApplicationController
     if current_user.setup_step != 4
       redirect_to("/setup/#{current_user.setup_step}")
     end
+    @valid_themes = Profile.valid_themes
+    @current_theme = current_user.profile.theme
   end
 
   def step_one_submit
@@ -94,9 +96,17 @@ class SetupController < ApplicationController
   end
 
   def step_four_submit
-    current_user.setup_step = 0
-    current_user.save
-    redirect_to('/projects', notice: 'Setup Completed Successfully!')
+    profile = current_user.profile
+    theme = Theme.find(theme_params[:theme])
+    if profile.update(theme: theme)
+      profile.start_theme_build
+      current_user.setup_step = 0
+      current_user.save
+      redirect_to('/projects', notice: 'Setup Completed Successfully!')
+    else
+      redirect_to "/setup/#{current_user.setup_step}",
+                  alert: profile.errors.full_messages.to_sentence
+    end
   end
 
   def previous_step
@@ -114,5 +124,9 @@ class SetupController < ApplicationController
 
   def contact_info_params
     params.require(:profile).permit(contact_info: %i[email phone location])
+  end
+
+  def theme_params
+    params.require(:theme).permit(:theme)
   end
 end
