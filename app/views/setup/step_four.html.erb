@@ -1,0 +1,27 @@
+<%= render "steps" %>
+<div class="mt-10" x-data="{selected: <%= @current_theme.id %>}">
+  <%= form_with url: setup_step_four_submit_path, method: :post, scope: :theme do |f| %>
+    <ul class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      <% @valid_themes.each do |theme| %>
+        <!-- Selected Class: "col-span-1 bg-teal-50 rounded-lg shadow divide-y divide-gray-200 ring ring-teal-300 cursor-pointer" -->
+        <li @click="selected = <%= theme.id %>" :class="selected === <%= theme.id %> ? 'bg-teal-50 ring ring-teal-300' : 'bg-white'" class="col-span-1 bg-white rounded-lg shadow divide-y divide-gray-200 cursor-pointer transform duration-150 ease-in-out">
+          <div class="flex w-full flex-col">
+            <img class="rounded-t-lg " src="https://via.placeholder.com/300x150" alt="<%= theme.name %>">
+            <div class="flex px-5 py-2 items-center">
+              <!-- Selected Class: "font-medium px-5 py-3" -->
+              <span class="flex-1"><%= theme.name %></span>
+              <%= link_to('Preview', theme.preview_url || '#', target: "_blank", rel: "noopener noreferrer", class: "inline-flex flex-2 items-center px-2.5 h-8 border border-transparent text-xs font-medium rounded text-blue-700 bg-blue-100 hover:bg-blue-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500") %>
+            </div>
+          </div>
+        </li>
+      <% end %>
+    </ul>
+    <input type="hidden" name="theme[theme]" x-bind:value="selected">
+    <div class="pt-5">
+      <div class="flex justify-between">
+        <%= link_to "Previous", setup_previous_step_path, method: :pose, class: "ml-3 inline-flex justify-center py-2 px-4 border border-gray-400 shadow-sm text-sm font-medium rounded-md text-gray-600 bg-white hover:bg-gray-200 cursor-pointer focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500" %>
+        <%= f.submit "Complete Setup", class: "ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-teal-600 hover:bg-teal-700 focus:outline-none focus:ring-2 cursor-pointer focus:ring-offset-2 focus:ring-teal-500" %>
+      </div>
+    </div>
+  <% end %>
+</div>

@@ -26,6 +26,22 @@ Rails.application.routes.draw do
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
   root to: 'home#index'
 
+  # Each step is further described in the setup controller
+  scope '/setup' do
+    get '/', to: 'setup#index', as: 'setup'
+    get '/1', to: 'setup#step_one', as: 'setup_step_one'
+    get '/2', to: 'setup#step_two', as: 'setup_step_two'
+    get '/3', to: 'setup#step_three', as: 'setup_step_three'
+    get '/4', to: 'setup#step_four', as: 'setup_step_four'
+
+    post '/1', to: 'setup#step_one_submit', as: 'setup_step_one_submit'
+    post '/2', to: 'setup#step_two_submit', as: 'setup_step_two_submit'
+    post '/3', to: 'setup#step_three_submit', as: 'setup_step_three_submit'
+    post '/4', to: 'setup#step_four_submit', as: 'setup_step_four_submit'
+
+    post '/previous_step', to: 'setup#previous_step', as: 'setup_previous_step'
+  end
+
   scope '/internal/api' do
     post 'initial_analysis',
          to: 'analysis_endpoints/receive_analysis#receive_initial_analysis'

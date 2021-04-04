@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_27_041816) do
+ActiveRecord::Schema.define(version: 2021_03_31_021854) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -58,8 +58,8 @@ ActiveRecord::Schema.define(version: 2021_03_27_041816) do
     t.datetime "updated_at", precision: 6, null: false
     t.string "tagline", default: "", null: false
     t.jsonb "social_links", default: {}, null: false
-    t.jsonb "analysis_status"
     t.jsonb "contact_info"
+    t.jsonb "analysis_status"
     t.bigint "theme_id"
     t.index ["theme_id"], name: "index_profiles_on_theme_id"
     t.index ["user_id"], name: "index_profiles_on_user_id", unique: true
@@ -69,8 +69,8 @@ ActiveRecord::Schema.define(version: 2021_03_27_041816) do
     t.bigint "profile_id", null: false
     t.string "name", null: false
     t.string "tagline", null: false
-    t.string "description"
-    t.string "image_url"
+    t.string "description", null: false
+    t.string "image_url", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.jsonb "aggregated_tech_analysis"
@@ -85,7 +85,6 @@ ActiveRecord::Schema.define(version: 2021_03_27_041816) do
     t.string "full_name", null: false
     t.string "avatar_url"
     t.text "description"
-    t.boolean "is_fork"
     t.boolean "is_private"
     t.string "primary_language"
     t.integer "stargazers"
@@ -136,6 +135,7 @@ ActiveRecord::Schema.define(version: 2021_03_27_041816) do
     t.bigint "invited_by_id"
     t.integer "invitations_count", default: 0
     t.string "avatar_url"
+    t.integer "setup_step", default: 1
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["invitation_token"], name: "index_users_on_invitation_token", unique: true

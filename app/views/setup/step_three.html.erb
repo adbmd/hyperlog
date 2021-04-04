@@ -1,0 +1,23 @@
+<%= render "steps" %>
+<%= form_with model: @user.profile, url: setup_step_three_submit_path, html: { method: :post, class: "flex-grow space-y-4 max-w-2xl mx-auto" } do |f| %>
+  <div class="mt-6 grid grid-cols-12 gap-6">
+    <div class="col-span-12">
+      <%= f.label 'contact_info[email]', 'Email Address', class: "block text-sm font-medium text-gray-700" %>
+      <%= f.email_field 'contact_info[email]', value: @contact_info.fetch('email'), placeholder: 'yourname@example.com', class: "mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-teal-500 focus:border-teal-500 sm:text-sm" %>
+    </div>
+    <div class="col-span-12">
+      <%= f.label 'contact_info[phone]', 'Phone Number', class: "block text-sm font-medium text-gray-700" %>
+      <%= f.text_field 'contact_info[phone]', value: @contact_info.fetch('phone'), placeholder: 'Prefer adding your country code (e.g. +1 for US, +91 for India)', class: "mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-teal-500 focus:border-teal-500 sm:text-sm" %>
+    </div>
+    <div class="col-span-12">
+      <%= f.label 'contact_info[location]', 'Location', class: "block text-sm font-medium text-gray-700" %>
+      <%= f.text_field 'contact_info[location]', value: @contact_info.fetch('location'), placeholder: 'Geek City, Developer Heaven.', class: "mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-teal-500 focus:border-teal-500 sm:text-sm" %>
+    </div>
+  </div>
+  <div class="pt-5">
+    <div class="flex justify-between">
+      <%= link_to "Previous", setup_previous_step_path, method: :pose, class: "ml-3 inline-flex justify-center py-2 px-4 border border-gray-400 shadow-sm text-sm font-medium rounded-md text-gray-600 bg-white hover:bg-gray-200 cursor-pointer focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500" %>
+      <%= f.submit "Next", class: "ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-teal-600 hover:bg-teal-700 focus:outline-none focus:ring-2 cursor-pointer focus:ring-offset-2 focus:ring-teal-500" %>
+    </div>
+  </div>
+<% end %>

@@ -14,4 +14,8 @@ class ApplicationController < ActionController::Base
     devise_parameter_sanitizer.permit :sign_in, keys: %i[login password]
     devise_parameter_sanitizer.permit :account_update, keys: added_attrs
   end
+
+  def after_sign_in_path_for(_resource)
+    current_user.setup_step.positive? ? setup_path : home_index_path
+  end
 end
