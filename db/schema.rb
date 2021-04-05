@@ -58,8 +58,8 @@ ActiveRecord::Schema.define(version: 2021_03_31_021854) do
     t.datetime "updated_at", precision: 6, null: false
     t.string "tagline", default: "", null: false
     t.jsonb "social_links", default: {}, null: false
-    t.jsonb "contact_info"
     t.jsonb "analysis_status"
+    t.jsonb "contact_info"
     t.bigint "theme_id"
     t.index ["theme_id"], name: "index_profiles_on_theme_id"
     t.index ["user_id"], name: "index_profiles_on_user_id", unique: true
@@ -69,8 +69,8 @@ ActiveRecord::Schema.define(version: 2021_03_31_021854) do
     t.bigint "profile_id", null: false
     t.string "name", null: false
     t.string "tagline", null: false
-    t.string "description", null: false
-    t.string "image_url", null: false
+    t.string "description"
+    t.string "image_url"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.jsonb "aggregated_tech_analysis"
@@ -85,6 +85,7 @@ ActiveRecord::Schema.define(version: 2021_03_31_021854) do
     t.string "full_name", null: false
     t.string "avatar_url"
     t.text "description"
+    t.boolean "is_fork"
     t.boolean "is_private"
     t.string "primary_language"
     t.integer "stargazers"
