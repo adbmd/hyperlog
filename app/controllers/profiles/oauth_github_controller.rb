@@ -9,7 +9,7 @@ class Profiles::OauthGithubController < ApplicationController
   end
 
   def oauth_initiate
-    redirect_to @oauth_client.auth_code.authorize_url({scope: 'read:org,public_repo'})
+    redirect_to @oauth_client.auth_code.authorize_url({ scope: 'read:org,public_repo' })
   end
 
   def oauth_callback
@@ -17,11 +17,11 @@ class Profiles::OauthGithubController < ApplicationController
     begin
       token = @oauth_client.auth_code.get_token(params[:code])
     rescue OAuth2::Error => e
-      return redirect_to home_index_path, alert: e.description
+      return redirect_to setup_path, alert: e.description
     end
 
     if current_user.profile.has_attribute?(:github)
-      redirect_to home_index_path,
+      redirect_to setup_path,
                   alert: 'A GitHub account is already connected for analysis'
     else
       begin
@@ -33,9 +33,9 @@ class Profiles::OauthGithubController < ApplicationController
         p.save!
         p.github.start_initial_analysis
 
-        redirect_to home_index_path, notice: 'GitHub connected successfully! 🎉'
+        redirect_to setup_path, notice: 'GitHub connected successfully! 🎉'
       rescue ActiveRecord::RecordNotUnique
-        redirect_to home_index_path,
+        redirect_to setup_path,
                     alert: 'This GitHub profile is already connected to some other account.'
       end
     end
