@@ -14,8 +14,18 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
         redirect_to :home_index_path, alert: 'Couldn\'t connect with GitHub account'
       end
     else
-      @user = User.from_omniauth(request.env['omniauth.auth'])
-      sign_in_and_redirect @user
+      user = User.from_omniauth(request.env['omniauth.auth'])
+      if user
+        @user = user
+        sign_in_and_redirect @user
+      else
+        redirect_to new_user_session_path,
+                    alert: "Sign-ups are disabled because we are currently in closed beta.<br />" \
+                           "We are delighted to know that you're excited about Hyperlog! " \
+                           "Join the waitlist here at <a href='https://hyperlog.io'><u>Hyperlog.io</u></a> " \
+                           "to be among the first to get access as we open up.",
+                    flash: { html_alert: true }  # a hacky way to pass parameters, remove this later
+      end
     end
   end
 end
