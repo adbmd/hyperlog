@@ -87,3 +87,6 @@ gem 'figaro', '~> 1.2'
 gem 'fastimage', '~> 2.2'
 
 gem 'friendly_id', '~> 5.4'
+
+gem "sentry-ruby", "~> 4.3"
+gem "sentry-rails", "~> 4.3"
