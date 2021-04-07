@@ -19,7 +19,8 @@
               </div>
               <div class="ml-3">
                 <h3 class="text-sm font-medium text-red-800">
-                  <%= alert %>
+                  <%# this skips escaping so as to allow HTML <a> tag in the alert box. must be reverted later %>
+                  <%= flash['html_alert'] ? raw(alert) : alert %> 
                 </h3>
               </div>
             </div>
