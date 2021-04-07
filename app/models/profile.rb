@@ -13,8 +13,6 @@ class Profile < ApplicationRecord
   after_initialize :set_defaults
   before_save :contact_info_attrs_nil_if_blank
 
-  before_save :contact_info_attrs_nil_if_blank
-
   after_update :broadcast_progress, if: proc { analysis_status? }
 
   validates_each :social_links do |record, attr, value|
@@ -105,7 +103,7 @@ class Profile < ApplicationRecord
   private
 
   def validate_contact_info_email
-    return if contact_info['email'].nil?
+    return if contact_info['email'].blank?
 
     unless URI::MailTo::EMAIL_REGEXP.match(contact_info['email'])
       errors.add(:contact_info, 'email is not valid')
@@ -113,7 +111,7 @@ class Profile < ApplicationRecord
   end
 
   def validate_contact_info_phone
-    return if contact_info['phone'].nil?
+    return if contact_info['phone'].blank?
 
     if Phonelib.invalid?(contact_info['phone'])
       errors.add(:contact_info, 'phone number is invalid')
