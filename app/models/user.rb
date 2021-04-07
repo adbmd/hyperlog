@@ -31,10 +31,14 @@ class User < ApplicationRecord
   validates :last_name, presence: true
 
   # @ character shouldn't be allowed in username (else it could be confused with email)
-  validates :username, format: { with: /^[a-zA-Z0-9_.]*$/, multiline: true }
+  validates :username, format: { with: /^[a-z0-9-]*$/, multiline: true }
 
   # validate email with regex
   validates :email, format: { with: URI::MailTo::EMAIL_REGEXP }
+
+  before_validation do
+    self.username = username.downcase if username?
+  end
 
   # Add :login reader and writer for username/email authentication
   attr_writer :login
