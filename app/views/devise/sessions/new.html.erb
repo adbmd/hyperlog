@@ -74,7 +74,7 @@
         <div class="mt-6">
           <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: {class: 'space-y-6'}) do |f| %>
             <div>
-              <%= f.label "Username/Email", class: "block text-sm font-medium text-gray-700" %>
+              <%= f.label "Username or email address", class: "block text-sm font-medium text-gray-700" %>
               <div class="mt-1">
                 <%= f.text_field :login, autofocus: true, autocomplete: "username", class: "appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-teal-500 focus:border-teal-500 sm:text-sm" %>
               </div>
