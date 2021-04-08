@@ -9,6 +9,7 @@ class Profile < ApplicationRecord
   has_many :profile_repo_analyses, dependent: :destroy
   has_many :projects, dependent: :destroy
   has_many :repos, through: :profile_repo_analyses
+  has_many :blogs, dependent: :destroy # set sentinel/null?
 
   after_initialize :set_defaults
   before_save :contact_info_attrs_nil_if_blank
@@ -98,6 +99,10 @@ class Profile < ApplicationRecord
     analysed, total = analysis_status.values_at('analysed_repos_count',
                                                 'repos_count')
     analysed == total
+  end
+
+  def base_domain
+    "https://#{user.username}.hyperlog.dev"
   end
 
   private

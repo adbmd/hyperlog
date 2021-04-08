@@ -1,4 +1,9 @@
 Rails.application.routes.draw do
+  resources :blogs do
+    member do
+      put 'publish'
+    end
+  end
   get  'home/index'
   get  'profiles/oauth/github',
        to: 'profiles/oauth_github#oauth_initiate'

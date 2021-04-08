@@ -1,0 +1,43 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Blogs</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Slug</th>
+      <th>Title</th>
+      <th>Description</th>
+      <th>Cover image</th>
+      <th>Readable publish date</th>
+      <th>Social image</th>
+      <th>Url</th>
+      <th>Canonical url</th>
+      <th>Body markdown</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @blogs.each do |blog| %>
+      <tr>
+        <td><%= blog.slug %></td>
+        <td><%= blog.title %></td>
+        <td><%= blog.description %></td>
+        <td><%= blog.cover_image %></td>
+        <td><%= blog.readable_publish_date %></td>
+        <td><%= blog.social_image %></td>
+        <td><%= blog.url %></td>
+        <td><%= blog.canonical_url %></td>
+        <td><%= blog.body_markdown %></td>
+        <td><%= link_to 'Show', blog %></td>
+        <td><%= link_to 'Edit', edit_blog_path(blog) %></td>
+        <td><%= link_to 'Destroy', blog, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Blog', new_blog_path %>

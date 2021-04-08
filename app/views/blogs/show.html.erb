@@ -1,0 +1,46 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Slug:</strong>
+  <%= @blog.slug %>
+</p>
+
+<p>
+  <strong>Title:</strong>
+  <%= @blog.title %>
+</p>
+
+<p>
+  <strong>Description:</strong>
+  <%= @blog.description %>
+</p>
+
+<p>
+  <strong>Cover image:</strong>
+  <%= @blog.cover_image %>
+</p>
+
+<p>
+  <strong>Readable publish date:</strong>
+  <%= @blog.readable_publish_date %>
+</p>
+
+<p>
+  <strong>Url:</strong>
+  <%= @blog.url %>
+</p>
+
+<p>
+  <strong>Canonical url:</strong>
+  <%= @blog.canonical_url %>
+</p>
+
+<p>
+  <strong>Body markdown:</strong>
+  <%= @blog.body_markdown %>
+</p>
+
+
+<% unless @blog.published? %> <%= link_to 'Publish', publish_blog_path(@blog), method: :put %> | <% end %>
+<%= link_to 'Edit', edit_blog_path(@blog) %> |
+<%= link_to 'Back', blogs_path %> |
