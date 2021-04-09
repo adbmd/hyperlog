@@ -101,6 +101,30 @@ class Profile < ApplicationRecord
     analysed == total
   end
 
+  def sync_devto_blogs
+    unless (token = blogging_connections['devto']&.key?('access_token'))
+      errors.add(:base, "Dev.to account hasn't been connected yet")
+      return
+    end
+
+    page = 1
+    per_page = 100
+
+    while page.positive?
+      articles = Faraday.get('https://dev.to/api/articles/me') do |req|
+        req.headers['Accept'] = 'application/json'
+        req.headers['Authorization'] = "Bearer #{token}"
+        req.params['limit'] = 100
+      end
+
+      articles.each do |article|
+        # TODO: create blog save to database
+      end
+
+      page = articles.size < per_page ? 0 : page + 1
+    end
+  end
+
   def base_domain
     "https://#{user.username}.hyperlog.dev"
   end
@@ -136,5 +160,13 @@ class Profile < ApplicationRecord
                                          locals: { profile: self })
     )
     cable_ready.broadcast
+  end
+
+  def devto_oauth_client
+    OAuth2::Client.new(Rails.configuration.x.profiles.devto_client_id,
+                       Rails.configuration.x.profiles.devto_client_secret,
+                       authorize_url: 'https://dev.to/oauth/authorize',
+                       site: 'https://dev.to/api',
+                       token_url: 'https://dev.to/oauth/token')
   end
 end

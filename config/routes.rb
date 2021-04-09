@@ -10,6 +10,12 @@ Rails.application.routes.draw do
   get  'profiles/oauth/github/callback',
        to: 'profiles/oauth_github#oauth_callback'
 
+  get 'profiles/oauth/devto',
+      to: 'profiles/blogging_connections#devto_oauth_initialize'
+  get 'profiles/oauth/devto/callback',
+      to: 'profiles/blogging_connections#devto_oauth_callback'
+
+
   post 'internal/api/initial_analysis',
        to: 'analysis_endpoints/receive_analysis#receive_initial_analysis'
   post 'internal/api/tech_analysis',
