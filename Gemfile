@@ -90,3 +90,5 @@ gem 'friendly_id', '~> 5.4'
 
 gem "sentry-ruby", "~> 4.3"
 gem "sentry-rails", "~> 4.3"
+
+gem "sidekiq", "~> 6.2"

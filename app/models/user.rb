@@ -40,7 +40,7 @@ class User < ApplicationRecord
     self.username = username.downcase if username?
   end
 
-  before_save :update_opengraph_image_if_needed
+  before_save :update_opengraph_image, if: :need_to_update_opengraph_image?
 
   # Add :login reader and writer for username/email authentication
   attr_writer :login
@@ -133,11 +133,11 @@ class User < ApplicationRecord
 
   private
 
-  def update_opengraph_image_if_needed
-    unless (changed_attribute_names_to_save & %w[first_name last_name avatar_url]).any?
-      return
-    end
+  def update_opengraph_image
+    profile.update_opengraph_in_background
+  end
 
-    profile.update_opengraph
+  def need_to_update_opengraph_image?
+    (changed_attribute_names_to_save & %w[first_name last_name avatar_url]).any?
   end
 end

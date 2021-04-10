@@ -98,6 +98,7 @@ GEM
       aws_cf_signer
       rest-client (>= 2.0.0)
     concurrent-ruby (1.1.8)
+    connection_pool (2.2.3)
     crass (1.0.6)
     devise_invitable (2.0.3)
       actionmailer (>= 5.0)
@@ -283,6 +284,10 @@ GEM
     sentry-ruby-core (4.3.2)
       concurrent-ruby
       faraday
+    sidekiq (6.2.1)
+      connection_pool (>= 2.2.2)
+      rack (~> 2.0)
+      redis (>= 4.2.0)
     spring (2.1.1)
     sprockets (4.0.2)
       concurrent-ruby (~> 1.0)
@@ -364,6 +369,7 @@ DEPENDENCIES
   selenium-webdriver
   sentry-rails (~> 4.3)
   sentry-ruby (~> 4.3)
+  sidekiq (~> 6.2)
   spring
   tzinfo-data
   web-console (>= 4.1.0)

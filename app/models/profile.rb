@@ -13,7 +13,7 @@ class Profile < ApplicationRecord
   after_initialize :set_defaults
   before_save :contact_info_attrs_nil_if_blank
 
-  before_save :update_opengraph, if: :will_save_change_to_tagline?
+  before_save :update_opengraph_in_background, if: :will_save_change_to_tagline?
 
   after_update :broadcast_progress, if: proc { analysis_status? }
 
@@ -144,8 +144,12 @@ class Profile < ApplicationRecord
       }.to_json
     end
 
-    self.opengraph_image = response.body['url']
+    self.opengraph_image = JSON.parse(response.body)['url']
     save!
+  end
+
+  def update_opengraph_in_background
+    ProfileOpengraphUpdateJob.perform_later(self)
   end
 
   private

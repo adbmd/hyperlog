@@ -76,7 +76,7 @@ class DataApiController < ActionController::API
 
   def user_info_from_user(user)
     user_attributes = user.as_json only: %i[username first_name last_name]
-    profile_attributes = user.profile.as_json only: %i[tagline about]
+    profile_attributes = user.profile.as_json only: %i[tagline about opengraph_image]
     user_attributes.merge(profile_attributes)
   end
 
