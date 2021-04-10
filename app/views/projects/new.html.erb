@@ -1,8 +1,47 @@
 <div class="bg-white rounded-lg shadow px-5 py-6 sm:px-6">
-  <div class="pb-5 border-b border-gray-200 sm:flex sm:items-center sm:justify-between">
-    <a href="<%= projects_home_path %>" class="text-base hover:bg-blue-50 p-2 px-3 rounded-md leading-6 font-medium text-blue-500 hover:text-blue-700">
+  <div class="pb-5 border-b border-gray-200 sm:flex sm:items-center sm:justify-between mb-5">
+    <a href="<%= blogs_path %>" class="text-base hover:bg-blue-50 p-2 px-3 rounded-md leading-6 font-medium text-blue-500 hover:text-blue-700">
       &lsaquo; Go Back
     </a>
   </div>
+  <% if alert %>
+    <div class="rounded-lg bg-red-50 text-white overflow-hidden shadow mb-4">
+      <div class="p-5">
+        <div class="flex">
+          <div class="flex-shrink-0">
+            <!-- Heroicon name: solid/information-circle -->
+            <svg class="h-5 w-5 text-red-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+              <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
+            </svg>
+          </div>
+          <div class="ml-3 flex-1 md:flex md:justify-between">
+            <p class="text-sm text-red-700">
+              <%= alert %>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+  <% if notice %>
+    <div class="rounded-lg bg-blue-50 text-white overflow-hidden shadow mb-4">
+      <div class="p-5">
+        <div class="flex">
+          <div class="flex-shrink-0">
+            <!-- Heroicon name: solid/information-circle -->
+            <svg class="h-5 w-5 text-blue-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+              <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
+            </svg>
+          </div>
+          <div class="ml-3 flex-1 md:flex md:justify-between">
+            <p class="text-sm text-blue-700">
+              <%= notice %>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
   <%= render partial: "form", locals: { form_model: nil, form_url: project_create_path } %>
+  <%= link_to 'Back', blogs_path %>
 </div>

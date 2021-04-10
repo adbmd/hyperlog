@@ -1,5 +1,7 @@
 class BlogsController < ApplicationController
-  before_action :set_blog, only: %i[ show edit update destroy publish ]
+  before_action :set_blog, only: %i[show edit update destroy publish]
+
+  layout 'user'
 
   # GET /blogs or /blogs.json
   def index
@@ -7,8 +9,7 @@ class BlogsController < ApplicationController
   end
 
   # GET /blogs/1 or /blogs/1.json
-  def show
-  end
+  def show; end
 
   # GET /blogs/new
   def new
@@ -16,8 +17,7 @@ class BlogsController < ApplicationController
   end
 
   # GET /blogs/1/edit
-  def edit
-  end
+  def edit; end
 
   # POST /blogs or /blogs.json
   def create
@@ -30,7 +30,9 @@ class BlogsController < ApplicationController
 
     respond_to do |format|
       if @blog.save
-        format.html { redirect_to @blog, notice: "Blog was successfully created." }
+        format.html do
+          redirect_to @blog, notice: 'Blog was successfully created.'
+        end
         format.json { render :show, status: :created, location: @blog }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -47,7 +49,10 @@ class BlogsController < ApplicationController
 
     respond_to do |format|
       if @blog.update(blog_params_obj)
-        format.html { redirect_to edit_blog_path(@blog), notice: "Blog was successfully updated." }
+        format.html do
+          redirect_to edit_blog_path(@blog),
+                      notice: 'Blog was successfully updated.'
+        end
         format.json { render :show, status: :ok, location: @blog }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -60,7 +65,9 @@ class BlogsController < ApplicationController
   def destroy
     @blog.destroy
     respond_to do |format|
-      format.html { redirect_to blogs_url, notice: "Blog was successfully destroyed." }
+      format.html do
+        redirect_to blogs_url, notice: 'Blog was successfully destroyed.'
+      end
       format.json { head :no_content }
     end
   end
@@ -69,7 +76,9 @@ class BlogsController < ApplicationController
   def publish
     respond_to do |format|
       if @blog.publish
-        format.html { redirect_to @blog, notice: "Blog was successfully published." }
+        format.html do
+          redirect_to @blog, notice: 'Blog was successfully published.'
+        end
         format.json { render :show, status: :ok, location: @blog }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -79,13 +88,15 @@ class BlogsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_blog
-      @blog = current_user.profile.blogs.friendly.find(params[:id])
-    end
 
-    # Only allow a list of trusted parameters through.
-    def blog_params
-      params.require(:blog).permit(:title, :description, :cover_image, :body_markdown)
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_blog
+    @blog = current_user.profile.blogs.friendly.find(params[:id])
+  end
+
+  # Only allow a list of trusted parameters through.
+  def blog_params
+    params.require(:blog).permit(:title, :description, :cover_image,
+                                 :body_markdown)
+  end
 end

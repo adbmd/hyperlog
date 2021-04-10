@@ -21,6 +21,7 @@ module.exports = {
       white: colors.white,
       blue: colors.blue,
       gray: colors.trueGray,
+      "cool-gray": colors.coolGray,
       indigo: colors.indigo,
       red: colors.rose,
       yellow: colors.amber,
@@ -35,5 +36,6 @@ module.exports = {
     require("@tailwindcss/aspect-ratio"),
     require("@tailwindcss/forms"),
     require("@tailwindcss/typography"),
+    require("@tailwindcss/line-clamp"),
   ],
 };
