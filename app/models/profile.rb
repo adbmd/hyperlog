@@ -100,6 +100,35 @@ class Profile < ApplicationRecord
     analysed == total
   end
 
+  def aggregate_tech_analysis
+    # initialize new hash, we'll fully recompute the overall analysis
+    aggregated = { libs: {}, tags: {}, tech: {} }
+    profile_repo_analyses.pluck(:tech_analysis).each do |tech_analysis|
+      next if tech_analysis.blank?
+
+      tech_analysis.symbolize_keys!
+      # category is one of [:libs, :tech, :tags]
+      tech_analysis.each do |category, category_stats|
+        # specific_key is the id of the lib, tech or tag
+        # e.g. it can be 'rb.rails' (as library) or 'framework' (as a tag)
+        category_stats.each do |specific_key, stats|
+          unless aggregated[category].key?(specific_key)
+            aggregated[category][specific_key] =
+              initial_stats_unit_for_tech_analysis
+          end
+
+          aggregated[category][specific_key][:insertions] += stats['insertions']
+          aggregated[category][specific_key][:deletions] += stats['deletions']
+        end
+      end
+    end
+
+    self.overall_tech_analysis = aggregated
+    save!
+
+    overall_tech_analysis
+  end
+
   private
 
   def validate_contact_info_email
@@ -131,5 +160,9 @@ class Profile < ApplicationRecord
                                          locals: { profile: self })
     )
     cable_ready.broadcast
+  end
+
+  def initial_stats_unit_for_tech_analysis
+    { insertions: 0, deletions: 0 }
   end
 end
