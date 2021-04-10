@@ -1,4 +1,42 @@
-<%= form_with(model: blog) do |form| %>
+<%= form_with(model: blog, html: { class: "space-y-2 max-w-3xl w-full mx-auto mt-8" }) do |form| %>
+  <% if alert %>
+    <div class="rounded-lg bg-red-50 text-white overflow-hidden shadow mb-4">
+      <div class="p-5">
+        <div class="flex">
+          <div class="flex-shrink-0">
+            <!-- Heroicon name: solid/information-circle -->
+            <svg class="h-5 w-5 text-red-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+              <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
+            </svg>
+          </div>
+          <div class="ml-3 flex-1 md:flex md:justify-between">
+            <p class="text-sm text-red-700">
+              <%= alert %>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+  <% if notice %>
+    <div class="rounded-lg bg-blue-50 text-white overflow-hidden shadow mb-4">
+      <div class="p-5">
+        <div class="flex">
+          <div class="flex-shrink-0">
+            <!-- Heroicon name: solid/information-circle -->
+            <svg class="h-5 w-5 text-blue-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+              <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
+            </svg>
+          </div>
+          <div class="ml-3 flex-1 md:flex md:justify-between">
+            <p class="text-sm text-blue-700">
+              <%= notice %>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
   <% if blog.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(blog.errors.count, "error") %> prohibited this blog from being saved:</h2>
@@ -10,28 +48,40 @@
     </div>
   <% end %>
   <div class="field">
-    <%= form.label :title %>
-    <%= form.text_field :title %>
+    <%= form.label :cover_image, class: "font-bold" %>
+    <div class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md" x-data="{noImageSelected: <%= blog.cover_image.nil? ? 'true' : 'false' %>}">
+      <div class="space-y-1 text-center">
+        <img class="mx-auto w-full" id="cover_image" src="<%= blog.cover_image %>">
+        <svg x-show="noImageSelected" class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48" aria-hidden="true">
+          <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+        <div class="flex text-sm text-gray-600 justify-center mt-5">
+          <%= form.label :cover_image, class: "relative cursor-pointer bg-white rounded-md font-medium text-teal-600 hover:text-teal-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-teal-500" do %>
+            <span>Upload cover photo</span>
+            <%= form.file_field :cover_image, accept: "image/*", class: "sr-only" %>
+          <% end %>
+        </div>
+        <p class="text-xs text-gray-500">
+          Just add some image. Doesn't matter how big or small.
+        </p>
+      </div>
+    </div>
   </div>
-  <div class="field">
-    <%= form.label :description %>
-    <%= form.text_field :description %>
-  </div>
-  <div class="field">
-    <%= form.label :cover_image %>
-    <%= form.file_field :cover_image %>
-  </div>
-  <div class="field">
-    <%= form.label :body_markdown %>
-    <%= form.text_area :body_markdown %>
-  </div>
+  <%= form.text_area :title, rows: 1, class: "w-full text-3xl font-bold border-none rounded text-cool-gray-800", placeholder: "Title of Post" %>
+  <%= form.text_area :description, rows: 1, class: "w-full text-xl font-medium border-none rounded text-cool-gray-600", placeholder: "Title of Post" %>
+  <%= form.text_area :body_markdown, rows: 25, class: "w-full p-3 bg-gray-50 border-none rounded font-mono", placeholder: "Content, you can use the markdown here!" %>
   <%# TODO: Enable autosave so that the article gets published directly on Publish %>
   <div class="actions">
-    <%= form.submit 'Save as Draft' %>
+    <%= form.submit 'Save as Draft', class: "inline-flex cursor-pointer items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" %>
   </div>
-  <% if @blog.id %>
-    <div class="publish">
-      <%= form.submit 'Save and Publish', formmethod: :put, formaction: publish_blog_path(@blog) %>
-    </div>
-  <% end %>
 <% end %>
+<script>
+  document.getElementById('blog_cover_image').addEventListener("change", function(e) {
+    var file = this.files[0];
+    var reader = new FileReader();
+    reader.onload = function(){
+      document.getElementById('cover_image').src = this.result;
+    };
+    reader.readAsDataURL(file);
+  })
+</script>
