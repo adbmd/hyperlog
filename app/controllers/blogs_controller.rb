@@ -74,14 +74,19 @@ class BlogsController < ApplicationController
 
   # PATCH/PUT /blogs/1/publish or /blogs/1/publish.json
   def publish
-    blog_params_obj = blog_params
-    cover_image = blog_params_obj.delete(:cover_image)
-    @blog.upload_cover_image(cover_image) unless cover_image.nil?
+    blog_params_obj = nil
+
+    if params.key?(:blog)
+      blog_params_obj = blog_params
+      cover_image = blog_params_obj.delete(:cover_image)
+      @blog.upload_cover_image(cover_image) unless cover_image.nil?
+    end
 
     respond_to do |format|
-      if @blog.update(blog_params_obj) && @blog.publish
+      if (blog_params_obj.nil? || @blog.update(blog_params_obj)) && @blog.publish
         format.html do
-          redirect_to edit_blog_path(@blog), status: :ok, notice: 'Blog was successfully published.'
+          redirect_to edit_blog_path(@blog), status: :ok,
+                                             notice: 'Blog was successfully published.'
         end
         format.json { render :show, status: :ok, location: @blog }
       else
