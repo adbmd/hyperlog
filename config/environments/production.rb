@@ -144,6 +144,9 @@ Rails.application.configure do
   config.x.profiles.theme_build_invocation_url = ENV['THEME_BUILD_INVOCATION_URL']
   config.x.profiles.theme_build_basic_auth = [ENV['THEME_BUILD_BASIC_USER'], ENV['THEME_BUILD_BASIC_PASS']]
 
+  # Endpoint for SEO image generation
+  config.x.profiles.users_seo_image_url = ENV.fetch('USERS_SEO_IMAGE_URL', 'http://localhost:5301/users')
+
   # Endpoint for triggering repo analysis
   config.x.repos.repo_analysis_invocation_url = ENV['REPO_ANALYSIS_INVOCATION_URL']
 end
