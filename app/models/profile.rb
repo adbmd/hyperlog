@@ -13,6 +13,8 @@ class Profile < ApplicationRecord
   after_initialize :set_defaults
   before_save :contact_info_attrs_nil_if_blank
 
+  before_save :update_opengraph_in_background, if: :will_save_change_to_tagline?
+
   after_update :broadcast_progress, if: proc { analysis_status? }
 
   validates_each :social_links do |record, attr, value|
@@ -127,6 +129,27 @@ class Profile < ApplicationRecord
     save!
 
     overall_tech_analysis
+  end
+
+  def update_opengraph
+    url = Rails.configuration.x.profiles.users_seo_image_url
+    default_avatar_url = 'https://res.cloudinary.com/hyperlog/image/upload/v1616919222/logos/Artboard-1x-logo_jepvv5.png'
+
+    response = Faraday.post(url) do |req|
+      req.headers['Content-Type'] = 'application/json'
+      req.body = {
+        name: "#{user.first_name} #{user.last_name}",
+        tagline: tagline.presence || 'Developer by day, Batman by night',
+        avatar_url: user.avatar_url || default_avatar_url
+      }.to_json
+    end
+
+    self.opengraph_image = JSON.parse(response.body)['url']
+    save!
+  end
+
+  def update_opengraph_in_background
+    ProfileOpengraphUpdateJob.perform_later(self)
   end
 
   private
