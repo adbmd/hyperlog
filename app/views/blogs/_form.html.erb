@@ -27,7 +27,11 @@
   </div>
   <%# TODO: Enable autosave so that the article gets published directly on Publish %>
   <div class="actions">
-    <%= form.submit 'Save' %>
-    <% if @blog.id %> <%= form.submit 'Publish', method: :put, action: publish_blog_path(@blog) %> <% end %>
+    <%= form.submit 'Save as Draft' %>
   </div>
+  <% if @blog.id %>
+    <div class="publish">
+      <%= form.submit 'Save and Publish', formmethod: :put, formaction: publish_blog_path(@blog) %>
+    </div>
+  <% end %>
 <% end %>

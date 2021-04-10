@@ -24,8 +24,7 @@ class Blog < ApplicationRecord
 
   def publish
     if published?
-      errors.add(:base, :already_published,
-                 'This blog has already been published')
+      errors.add(:base, 'This blog has already been published')
     else
       self.published_at = DateTime.current
       save
