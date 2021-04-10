@@ -9,11 +9,12 @@ class Profile < ApplicationRecord
   has_many :profile_repo_analyses, dependent: :destroy
   has_many :projects, dependent: :destroy
   has_many :repos, through: :profile_repo_analyses
+  has_many :blogs, dependent: :destroy # set sentinel/null?
 
   after_initialize :set_defaults
   before_save :contact_info_attrs_nil_if_blank
 
-  before_save :update_opengraph_in_background, if: :will_save_change_to_tagline?
+  before_save :update_opengraph_in_background, if: proc { persisted? && will_save_change_to_tagline? }
 
   after_update :broadcast_progress, if: proc { analysis_status? }
 
@@ -100,6 +101,34 @@ class Profile < ApplicationRecord
     analysed, total = analysis_status.values_at('analysed_repos_count',
                                                 'repos_count')
     analysed == total
+  end
+
+#   def sync_devto_blogs
+#     unless (token = blogging_connections['devto']&.key?('access_token'))
+#       errors.add(:base, "Dev.to account hasn't been connected yet")
+#       return
+#     end
+
+#     page = 1
+#     per_page = 100
+
+#     while page.positive?
+#       articles = Faraday.get('https://dev.to/api/articles/me') do |req|
+#         req.headers['Accept'] = 'application/json'
+#         req.headers['Authorization'] = "Bearer #{token}"
+#         req.params['limit'] = 100
+#       end
+
+#       articles.each do |article|
+#         # TODO: create blog save to database
+#       end
+
+#       page = articles.size < per_page ? 0 : page + 1
+#     end
+#   end
+
+  def base_domain
+    "https://#{user.username}.hyperlog.dev"
   end
 
   def aggregate_tech_analysis

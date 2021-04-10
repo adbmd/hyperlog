@@ -1,4 +1,9 @@
 Rails.application.routes.draw do
+  resources :blogs do
+    member do
+      put 'publish'
+    end
+  end
   get  'home/index'
   get  'profiles/oauth/github',
        to: 'profiles/oauth_github#oauth_initiate'
@@ -57,6 +62,8 @@ Rails.application.routes.draw do
     get '/projects', to: 'data_api#projects'
     get '/projects/:id', to: 'data_api#project_info'
     get '/projects/:project_id/repos/:repo_id', to: 'data_api#project_repo'
+    get '/blogs', to: 'data_api#blogs'
+    get '/blogs/:id', to: 'data_api#blog_info'
   end
 
   scope '/settings' do

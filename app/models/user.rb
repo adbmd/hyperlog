@@ -138,6 +138,6 @@ class User < ApplicationRecord
   end
 
   def need_to_update_opengraph_image?
-    (changed_attribute_names_to_save & %w[first_name last_name avatar_url]).any?
+    persisted? && (changed_attribute_names_to_save & %w[first_name last_name avatar_url]).any?
   end
 end

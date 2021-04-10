@@ -16,6 +16,23 @@ ActiveRecord::Schema.define(version: 2021_04_10_064617) do
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
 
+  create_table "blogs", force: :cascade do |t|
+    t.bigint "profile_id"
+    t.string "slug"
+    t.string "title"
+    t.string "description"
+    t.string "cover_image"
+    t.string "url"
+    t.string "canonical_url"
+    t.text "body_markdown"
+    t.jsonb "cross_posts"
+    t.datetime "published_at"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["profile_id"], name: "index_blogs_on_profile_id"
+    t.index ["slug"], name: "index_blogs_on_slug", unique: true
+  end
+
   create_table "friendly_id_slugs", force: :cascade do |t|
     t.string "slug", null: false
     t.integer "sluggable_id", null: false
@@ -61,6 +78,7 @@ ActiveRecord::Schema.define(version: 2021_04_10_064617) do
     t.jsonb "analysis_status"
     t.jsonb "contact_info"
     t.bigint "theme_id"
+    t.jsonb "blogging_connections", default: {}
     t.jsonb "overall_tech_analysis"
     t.string "opengraph_image"
     t.index ["theme_id"], name: "index_profiles_on_theme_id"

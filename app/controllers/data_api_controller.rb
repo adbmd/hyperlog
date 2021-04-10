@@ -40,6 +40,18 @@ class DataApiController < ActionController::API
     render json: repo_info_from_project_and_repo(project, repo)
   end
 
+  # GET /blogs
+  def blogs
+    # TODO: add pagination
+    render json: blogs_from_profile(@portfolio_user.profile)
+  end
+
+  # GET /blogs/:id
+  def blog_info
+    blog = @portfolio_user.profile.blogs.friendly.find(params[:id])
+    render json: blog_info_from_blog(blog)
+  end
+
   private
 
   def extract_portfolio_user
@@ -123,5 +135,23 @@ class DataApiController < ActionController::API
     pr_analysis_attributes = pr_analysis.as_json only: %i[contributions
                                                           tech_analysis]
     repo_attributes.merge(pr_analysis_attributes)
+  end
+
+  def blogs_from_profile(profile)
+    profile.blogs.map do |blog|
+      blog.as_json(
+        only: %i[id name slug description cover_image url canonical_url
+                 published_at],
+        methods: %i[readable_publish_date truncated_body_markdown]
+      )
+    end
+  end
+
+  def blog_info_from_blog(blog)
+    blog.as_json(
+      only: %i[id name slug description cover_image url canonical_url
+               published_at body_markdown],
+      methods: %i[readable_publish_date truncated_body_markdown]
+    )
   end
 end

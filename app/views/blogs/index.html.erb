@@ -1,0 +1,119 @@
+<div class="mx-auto">
+  <div class="grid grid-cols-1 gap-4 items-start lg:grid-cols-3 lg:gap-8">
+    <!-- Left column -->
+    <div class="grid grid-cols-1 gap-4 lg:col-span-2">
+      <section aria-labelledby="section-1-title">
+        <h2 class="sr-only" id="section-1-title">Section title</h2>
+        <% if alert %>
+          <div class="rounded-lg bg-red-50 text-white overflow-hidden shadow mb-4">
+            <div class="p-5">
+              <div class="flex">
+                <div class="flex-shrink-0">
+                  <!-- Heroicon name: solid/information-circle -->
+                  <svg class="h-5 w-5 text-red-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
+                  </svg>
+                </div>
+                <div class="ml-3 flex-1 md:flex md:justify-between">
+                  <p class="text-sm text-red-700">
+                    <%= alert %>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        <% end %>
+        <% if notice %>
+          <div class="rounded-lg bg-blue-50 text-white overflow-hidden shadow mb-4">
+            <div class="p-5">
+              <div class="flex">
+                <div class="flex-shrink-0">
+                  <!-- Heroicon name: solid/information-circle -->
+                  <svg class="h-5 w-5 text-blue-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
+                  </svg>
+                </div>
+                <div class="ml-3 flex-1 md:flex md:justify-between">
+                  <p class="text-sm text-blue-700">
+                    <%= notice %>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        <% end %>
+        <div class="rounded-lg bg-white overflow-hidden shadow">
+          <div class="p-6">
+            <div class="pb-5 border-b border-gray-200 sm:flex sm:items-center sm:justify-between">
+              <h3 class="text-lg leading-6 font-medium text-gray-900">
+                Blog Posts
+              </h3>
+              <div class="mt-3 sm:mt-0 sm:ml-4">
+                <a href="<%= new_blog_path %>" class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-teal-600 hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500">
+                  New Post
+                </a>
+              </div>
+            </div>
+            <ul class="divide-y divide-gray-200">
+              <% @blogs.each do |blog| %>
+                <li class="relative rounded-md bg-white py-5 px-4 hover:bg-gray-50 focus-within:ring-2 focus-within:ring-inset focus-within:ring-teal-600">
+                  <div class="flex justify-between space-x-3">
+                    <div class="min-w-0 flex-1">
+                      <a href="<%= edit_blog_path(blog) %>" class="block focus:outline-none">
+                        <span class="absolute inset-0" aria-hidden="true"></span>
+                        <p class="text-sm font-medium text-gray-900 truncate"><%= blog.title %></p>
+                        <p class="text-sm text-gray-500 truncate"><%= blog.description %></p>
+                      </a>
+                    </div>
+                    <time datetime="2021-01-27T16:35" class="flex-shrink-0 whitespace-nowrap text-sm text-gray-500"><%= blog.readable_publish_date ? blog.readable_publish_date : "Draft" %></time>
+                  </div>
+                  <div class="mt-1">
+                    <p class="line-clamp-2 text-sm text-gray-600">
+                      <%= blog.body_markdown %>
+                    </p>
+                  </div>
+                </li>
+              <% end %>
+              <!-- More items... -->
+            </ul>
+          </div>
+        </div>
+      </section>
+    </div>
+    <!-- Right column -->
+    <div class="grid grid-cols-1 gap-4">
+      <section aria-labelledby="section-2-title">
+        <h2 class="sr-only" id="section-2-title">Import Data</h2>
+        <div class="rounded-lg bg-white overflow-hidden shadow">
+          <div class="p-6">
+            <!-- Some Stuff like Changelog and announcements for the app will go here. -->
+            <div class="relative">
+              <div class="absolute inset-0 flex items-center" aria-hidden="true">
+                <div class="w-full border-t border-gray-300"></div>
+              </div>
+              <div class="relative flex justify-start">
+                <span class="pr-3 bg-white text-lg font-medium text-gray-900">
+                  Import Data
+                </span>
+              </div>
+            </div>
+            <div class="mt-2">
+              <ul class="divide-y divide-gray-200">
+                <li class="py-4">
+                  <div class="flex space-x-3">
+                    <div class="flex-1 space-y-1">
+                      <%# <button type="button" class="inline-flex items-center px-4 py-2 border border-transparent w-full text-sm font-medium rounded-md shadow-sm text-white bg-cool-gray-600 hover:bg-cool-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cool-gray-500"> %>
+                      <button type="button" class="opacity-50 inline-flex items-center px-4 py-2 border border-transparent w-full text-sm font-medium rounded-md shadow-sm text-white bg-cool-gray-600 focus:outline-none cursor-not-allowed" disabled>
+                        Connect with dev.to
+                      </button>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+</div>

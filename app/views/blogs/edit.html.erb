@@ -1,0 +1,9 @@
+<div class="bg-white rounded-lg shadow px-5 py-6 sm:px-6">
+  <div class="pb-5 border-b border-gray-200 sm:flex sm:items-center sm:justify-between mb-5">
+    <a href="<%= blogs_path %>" class="text-base hover:bg-blue-50 p-2 px-3 rounded-md leading-6 font-medium text-blue-500 hover:text-blue-700">
+      &lsaquo; Go Back
+    </a>
+    <%= button_to "Publish", publish_blog_path(@blog), class: "inline-flex cursor-pointer items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-teal-600 hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500", data: { confirm: "Are you sure you want to publish?" }, 'data-turbo': false, method: :put %>
+  </div>
+  <%= render 'form', blog: @blog %>
+</div>

@@ -94,12 +94,12 @@
               Home
             </a>
             <a href="<%= projects_home_path %>"
-                  class="text-sm font-medium rounded-md bg-white <%= current_page?(projects_home_path) ? "text-white bg-opacity-20 hover:bg-opacity-30" : "text-teal-100 bg-opacity-0 hover:bg-opacity-10" %> px-3 py-2"
+                  class="text-sm font-medium rounded-md bg-white <%= request.fullpath.starts_with?('/projects') ? "text-white bg-opacity-20 hover:bg-opacity-30" : "text-teal-100 bg-opacity-0 hover:bg-opacity-10" %> px-3 py-2"
                   aria-current="false">
               Projects
             </a>
-            <a href="#"
-                  class="text-gray-200 text-sm font-medium rounded-md bg-white bg-opacity-0 px-3 py-2 hover:bg-opacity-5 cursor-not-allowed"
+            <a href="<%= blogs_path %>"
+                  class="text-sm font-medium rounded-md bg-white <%= request.fullpath.starts_with?('/blogs') ? "text-white bg-opacity-20 hover:bg-opacity-30" : "text-teal-100 bg-opacity-0 hover:bg-opacity-10" %> px-3 py-2"
                   aria-current="false">
               Blogs
             </a>
