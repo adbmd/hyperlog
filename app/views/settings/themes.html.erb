@@ -16,7 +16,7 @@
         <!-- Selected Class: "col-span-1 bg-teal-50 rounded-lg shadow divide-y divide-gray-200 ring ring-teal-300 cursor-pointer" -->
         <li @click="selected = <%= theme.id %>" :class="selected === <%= theme.id %> ? 'bg-teal-50 ring ring-teal-300' : 'bg-white'" class="col-span-1 bg-white rounded-lg shadow divide-y divide-gray-200 cursor-pointer transform duration-150 ease-in-out">
           <div class="flex w-full flex-col">
-            <img class="rounded-t-lg " src="https://via.placeholder.com/300x150" alt="<%= theme.name %>">
+            <img class="rounded-t-lg " src=<%= theme.image_url %> alt="<%= theme.name %>">
             <div class="flex px-5 py-2 items-center">
               <!-- Selected Class: "font-medium px-5 py-3" -->
               <span class="flex-1"><%= theme.name %></span>
