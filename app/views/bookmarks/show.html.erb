@@ -1,0 +1,39 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Profile:</strong>
+  <%= @bookmark.profile_id %>
+</p>
+
+<p>
+  <strong>Url:</strong>
+  <%= @bookmark.url %>
+</p>
+
+<p>
+  <strong>Title:</strong>
+  <%= @bookmark.title %>
+</p>
+
+<p>
+  <strong>Folder:</strong>
+  <%= @bookmark.folder %>
+</p>
+
+<p>
+  <strong>Is pinned:</strong>
+  <%= @bookmark.is_pinned %>
+</p>
+
+<p>
+  <strong>Is hidden:</strong>
+  <%= @bookmark.is_hidden %>
+</p>
+
+<p>
+  <strong>To read:</strong>
+  <%= @bookmark.to_read %>
+</p>
+
+<%= link_to 'Edit', edit_bookmark_path(@bookmark) %> |
+<%= link_to 'Back', bookmarks_path %>

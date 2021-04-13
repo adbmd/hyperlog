@@ -1,0 +1,19 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  profile: one
+  url: MyString
+  title: MyString
+  folder: MyString
+  is_pinned: false
+  is_hidden: false
+  to_read: false
+
+two:
+  profile: two
+  url: MyString
+  title: MyString
+  folder: MyString
+  is_pinned: false
+  is_hidden: false
+  to_read: false

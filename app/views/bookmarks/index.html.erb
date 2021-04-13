@@ -1,0 +1,39 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Bookmarks</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Profile</th>
+      <th>Url</th>
+      <th>Title</th>
+      <th>Folder</th>
+      <th>Is pinned</th>
+      <th>Is hidden</th>
+      <th>To read</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @bookmarks.each do |bookmark| %>
+      <tr>
+        <td><%= bookmark.profile_id %></td>
+        <td><%= bookmark.url %></td>
+        <td><%= bookmark.title %></td>
+        <td><%= bookmark.folder %></td>
+        <td><%= bookmark.is_pinned %></td>
+        <td><%= bookmark.is_hidden %></td>
+        <td><%= bookmark.to_read %></td>
+        <td><%= link_to 'Show', bookmark %></td>
+        <td><%= link_to 'Edit', edit_bookmark_path(bookmark) %></td>
+        <td><%= link_to 'Destroy', bookmark, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Bookmark', new_bookmark_path %>

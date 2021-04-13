@@ -10,6 +10,7 @@ class Profile < ApplicationRecord
   has_many :projects, dependent: :destroy
   has_many :repos, through: :profile_repo_analyses
   has_many :blogs, dependent: :destroy # set sentinel/null?
+  has_many :bookmarks, dependent: :destroy
 
   after_initialize :set_defaults
   before_save :contact_info_attrs_nil_if_blank
@@ -81,6 +82,10 @@ class Profile < ApplicationRecord
       req.body = { uuid: user.id, username: user.username,
                    themeName: theme.name }.to_json
     end
+  end
+
+  def public_bookmarks
+    bookmarks.where(is_hidden: false)
   end
 
   def update_analysis_status
