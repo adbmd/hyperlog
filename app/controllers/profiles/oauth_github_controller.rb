@@ -9,7 +9,7 @@ class Profiles::OauthGithubController < ApplicationController
   end
 
   def oauth_initiate
-    redirect_to @oauth_client.auth_code.authorize_url({ scope: 'read:org,public_repo' })
+    redirect_to @oauth_client.auth_code.authorize_url
   end
 
   def oauth_callback
